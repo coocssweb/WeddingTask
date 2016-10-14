@@ -1,0 +1,14 @@
+.mold-box{
+  padding: 20px 10px;
+  float: left;
+}
+
+.mold-form{
+  float: left;
+  margin-top: 20px;
+}
+
+.mold-item{
+  float: left;
+  margin-right: 10px;
+}

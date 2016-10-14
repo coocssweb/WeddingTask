@@ -1,20 +1,18 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
 
-import { AppComponent } from './app.component';
+import { MoldFormComponent } from './mold/mold-form.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    MoldFormComponent
   ],
   imports: [
     BrowserModule,
-    FormsModule,
-    HttpModule
+    FormsModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [MoldFormComponent]
 })
 export class AppModule { }
