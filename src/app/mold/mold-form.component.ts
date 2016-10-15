@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Mold } from './mold'
 @Component({
-    selector: 'app-root',
+    selector: '<mold-form></mold-form>',
     templateUrl: 'mold-form.component.html',
     styleUrls: ['./mold-form.component.css']
 })
@@ -9,6 +9,11 @@ export class MoldFormComponent {
 
     //项目列表
     moldList = [
+        {
+          id: 0,
+          name: '全部',
+          count: 34
+        },
         {
             id: 1,
             name: '教堂',

@@ -1,0 +1,11 @@
+<div class="photo-list clearfix">
+  <div class="photo-item" *ngFor="let photo of photoList">
+      <div class="photo-content">
+        <a href="javascript:;" (click)="onDelete(index)" class="btn-remove"><span class="glyphicon glyphicon-remove"></span></a>
+        <span class="photo-time">{{photo.time}}</span>
+        <img src="{{photo.path}}}" class="photo-image" />
+        <div class="photo-info"><span>{{photo.name}}</span><span class="photo-size">{{photo.size}}MB</span></div>
+        <div class="photo-opinion"><span class="photo-label">客户意见:</span><span>{{photo.opinion}}</span></div>
+    </div>
+  </div>
+</div>

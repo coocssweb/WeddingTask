@@ -1,0 +1,77 @@
+.photo-list{
+  width: 1200px;
+  margin-top: 20px;
+}
+
+.photo-item{
+  width: 220px;
+  float: left;
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
+
+.photo-content{
+  box-shadow: 0 1px 3px rgba(0,0,0,.3);
+  -moz-box-shadow: 0 1px 3px rgba(0,0,0,.3);
+  -webkit-box-shadow: 0 1px 3px rgba(0,0,0,.3);
+  background-color: #ffffff;
+  position: relative;
+}
+
+.photo-image{
+  width: 100%;
+}
+
+.photo-time{
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: rgba(0,0,0,0.5);
+  color: #ffffff;
+  padding: 1px 5px;
+}
+
+.btn-remove{
+  position: absolute;
+  right: -8px;
+  top: -8px;
+  height: 30px;
+  line-height: 30px;
+  width: 30px;
+  text-align: center;
+  background-color: #ffffff;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+  color: #000000;
+  border: 1px solid #999;
+  z-index: 2;
+}
+.btn-remove:hover{
+  background-color: #efefef;
+}
+.photo-info{
+  position: relative;
+  padding:10px;
+}
+
+.photo-size{
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  color: #9E7E6B;
+}
+
+.photo-opinion{
+  color: #999;
+  border-top: 1px solid #F2F2F2;
+  background: #FAFAFA;
+  position: relative;
+  padding: 10px;
+}
+
+.photo-label{
+  color: #9E7E6B;
+  margin-right: 5px;
+}
+
