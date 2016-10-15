@@ -33,3 +33,8 @@ ul, li {
   margin: 0px;
   padding: 0px;
 }
+
+.none-data{
+  height: 213px;
+  background: url('../images/none-data.png') center top no-repeat;
+}

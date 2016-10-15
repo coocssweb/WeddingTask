@@ -1,35 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Mold } from './mold'
+import { MoldService } from '../../services/mold.service'
+
 @Component({
     selector: '<mold-form></mold-form>',
     templateUrl: 'mold-form.component.html',
-    styleUrls: ['./mold-form.component.css']
+    styleUrls: ['./mold-form.component.css'],
+    providers: [MoldService]
 })
-export class MoldFormComponent {
+export class MoldFormComponent implements OnInit {
 
     //项目列表
-    moldList = [
-        {
-          id: 0,
-          name: '全部',
-          count: 34
-        },
-        {
-            id: 1,
-            name: '教堂',
-            count: 10
-        },
-        {
-            id: 2,
-            name: '海边',
-            count: 11
-        },
-        {
-            id: 3,
-            name: '山上',
-            count: 13
-        }
-    ]
+    moldList: Mold[]
 
     //当前选择项
     selectedMold = {
@@ -43,6 +25,16 @@ export class MoldFormComponent {
 
     //是否显示添加框
     isShowForm = false
+
+    constructor(private moldService: MoldService) { }
+
+    getMolds(): void {
+      this.moldService.getMolds().then(molds => this.moldList = molds);
+    }
+
+    ngOnInit(): void {
+      this.getMolds()
+    }
 
     //提交
     onSubmit(){

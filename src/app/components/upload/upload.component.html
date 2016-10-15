@@ -1,6 +1,7 @@
-<div class="upload-box">
+<div class="upload-box"  (fileOver)="fileOverBase($event)">
   <a href="javascript:;" class="btn btn-primary">
     <span class="glyphicon glyphicon-cloud-upload"></span> 上传原片
   </a>
   <div class="upload-label">你可以把原片直接拖入这里</div>
+  <input type="file" multiple class="file-input" />
 </div>

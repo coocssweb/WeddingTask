@@ -2,16 +2,18 @@ import { BrowserModule } from '@angular/platform-browser'
 import { NgModule } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { AppComponent } from './app.component'
-import { MoldFormComponent } from './mold/mold-form.component'
-import { UploadComponent } from './upload/upload.component'
-import { PhotosComponent } from './photos/photos.component'
+import { MoldFormComponent } from './components/mold/mold-form.component'
+import { UploadComponent } from './components/upload/upload.component'
+import { PhotosComponent } from './components/photos/photos.component'
+import { ConfirmComponent } from './common/confirm/confirm.component'
 
 @NgModule({
   declarations: [
     AppComponent,
     MoldFormComponent,
     UploadComponent,
-    PhotosComponent
+    PhotosComponent,
+    ConfirmComponent
   ],
   imports: [
     BrowserModule,

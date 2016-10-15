@@ -7,4 +7,10 @@ import { Component } from '@angular/core';
 })
 export class UploadComponent {
 
+  hasBaseDropZoneOver = false
+
+  fileOverBase(event){
+    this.hasBaseDropZoneOver = event;
+  }
+
 }

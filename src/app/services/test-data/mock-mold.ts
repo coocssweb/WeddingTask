@@ -1,0 +1,24 @@
+import { Mold } from '../../components/mold/mold'
+
+export const MOLDS: Mold[] = [
+  {
+    id: 0,
+    name: '全部',
+    count: 34
+  },
+  {
+    id: 1,
+    name: '教堂',
+    count: 10
+  },
+  {
+    id: 2,
+    name: '海边',
+    count: 11
+  },
+  {
+    id: 3,
+    name: '山上',
+    count: 13
+  }
+];
