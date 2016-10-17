@@ -1,3 +1,7 @@
+/**
+ * 图片类型表单
+ * @description :: 图片类型表单
+ */
 import { Component, OnInit } from '@angular/core';
 import { Mold } from './mold'
 import { MoldService } from '../../services/mold.service'
@@ -46,6 +50,7 @@ export class MoldFormComponent implements OnInit {
       this.selectedMold = mold
     }
 
+    //显示表单
     onShowForm(isShowForm){
       this.isShowForm = isShowForm
     }

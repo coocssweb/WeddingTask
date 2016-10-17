@@ -9,11 +9,12 @@ export class UploadComponent {
 
   @Output() previewPhoto = new EventEmitter()
 
+  //上传按钮点击事件
   onClick(){
     document.getElementById('file-upload').click()
   }
 
-
+  //文件输入框变化事件
   onFileChange(event: any){
 
     let files = (<HTMLInputElement>document.getElementById('file-upload')).files
@@ -24,8 +25,9 @@ export class UploadComponent {
       fileList.push(files[i])
     }
 
-    this.previewPhoto.emit(fileList)
 
+    //回调预览图片事件
+    this.previewPhoto.emit(fileList)
   }
 
 }

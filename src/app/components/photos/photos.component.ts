@@ -14,11 +14,12 @@ export class PhotosComponent implements OnInit{
 
   confirmContent: string = '确认删除这条数据吗？'
 
-  //项目列表
+  //图片列表
   photoList: Photo [ ]
 
   constructor(private photoService: PhotoService) { }
 
+  //获取图片列表
   getPhotos(): void {
     this.photoService.getPhotos().then(photos => this.photoList = photos);
   }
@@ -27,15 +28,20 @@ export class PhotosComponent implements OnInit{
     this.getPhotos()
   }
 
+  //当前要删除的图片信息
   removePhoto: Photo
 
+  //删除原片
   onDelete(photo){
     this.isShowConfirm = true
     this.removePhoto = photo
   }
 
+
+  //是否显示删除确认框
   isShowConfirm = false
 
+  //确认事件
   onConfirm(){
     for(let i = 0; i< this.photoList.length; i++){
       if(this.photoList[i].id === this.removePhoto.id){
@@ -47,10 +53,13 @@ export class PhotosComponent implements OnInit{
     this.isShowConfirm = false
   }
 
+  //关闭确认框
   onCancel(){
     this.isShowConfirm = false
   }
 
+
+  //读取图片预览图地址
   readFilePath(file, index){
     var reader = new FileReader();
     reader.onload = function(evt){
@@ -59,6 +68,7 @@ export class PhotosComponent implements OnInit{
     reader.readAsDataURL(file);
   }
 
+  //预览emit回调
   previewPhoto(fileList){
 
     let fileInfoList = []
