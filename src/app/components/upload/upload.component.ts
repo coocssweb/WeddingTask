@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'upload',
@@ -7,10 +7,25 @@ import { Component } from '@angular/core';
 })
 export class UploadComponent {
 
-  hasBaseDropZoneOver = false
+  @Output() previewPhoto = new EventEmitter()
 
-  fileOverBase(event){
-    this.hasBaseDropZoneOver = event;
+  onClick(){
+    document.getElementById('file-upload').click()
+  }
+
+
+  onFileChange(event: any){
+
+    let files = (<HTMLInputElement>document.getElementById('file-upload')).files
+
+    let fileList = []
+
+    for(let i = 0; i< files.length; i++){
+      fileList.push(files[i])
+    }
+
+    this.previewPhoto.emit(fileList)
+
   }
 
 }

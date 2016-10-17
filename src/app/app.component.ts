@@ -4,7 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-root',
   template: `
     <mold-form></mold-form>
-    <upload></upload>
     <photos></photos>
   `
 })

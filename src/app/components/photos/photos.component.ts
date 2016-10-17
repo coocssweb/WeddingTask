@@ -50,4 +50,33 @@ export class PhotosComponent implements OnInit{
   onCancel(){
     this.isShowConfirm = false
   }
+
+  readFilePath(file, index){
+    var reader = new FileReader();
+    reader.onload = function(evt){
+      (<HTMLInputElement>document.getElementById('image-'+index)).src = evt.target.result
+    }
+    reader.readAsDataURL(file);
+  }
+
+  previewPhoto(fileList){
+
+    let fileInfoList = []
+
+    for(let i=0; i< fileList.length; i++){
+      let file = fileList[i]
+      fileInfoList.push({
+        id: 0,
+        path: '',
+        name: file.name,
+        size: (file.size / (1024*1024)).toFixed(2),
+        time: '6:00',
+        opinion: ''
+      })
+
+      this.readFilePath(file, i)
+    }
+
+    this.photoList = fileInfoList.concat(this.photoList)
+  }
 }

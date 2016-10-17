@@ -18,6 +18,12 @@
   position: relative;
 }
 
+.photo-box{
+  width: 100%;
+  overflow: hidden;
+  height: 147px;
+}
+
 .photo-image{
   width: 100%;
 }
@@ -53,6 +59,14 @@
 .photo-info{
   position: relative;
   padding:10px;
+}
+
+.photo-name{
+  display: inline-block;
+  width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .photo-size{
