@@ -17,6 +17,7 @@ export class MoldFormComponent implements OnInit {
     //项目列表
     moldList: Mold[]
 
+
     //当前选择项
     selectedMold = {
       id: 2,
@@ -33,7 +34,9 @@ export class MoldFormComponent implements OnInit {
     constructor(private moldService: MoldService) { }
 
     getMolds(): void {
-      this.moldService.getMolds().then(molds => this.moldList = molds);
+      this.moldService.getMolds()
+        .then(
+          molds => this.moldList = molds)
     }
 
     ngOnInit(): void {

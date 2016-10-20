@@ -11,8 +11,8 @@
       <span class="photo-time">{{photo.time}}</span>
       <div class="photo-box">
         <img id="image-{{i}}" src="{{photo.path}}" class="photo-image"/>
-        <div class="progress progress-box">
-          <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;"></div>
+        <div [hidden]="!photo.isWaiting"  class="waiting-box">
+          等待上传
         </div>
       </div>
       <div class="photo-info"><span class="photo-name">{{photo.name}}</span><span class="photo-size">{{photo.size}}M</span></div>

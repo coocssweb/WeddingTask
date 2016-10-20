@@ -81,7 +81,9 @@ export class PhotosComponent implements OnInit{
         name: file.name,
         size: (file.size / (1024*1024)).toFixed(2),
         time: '6:00',
-        opinion: ''
+        opinion: '',
+        isActive: true,
+        isWaiting: true
       })
 
       this.readFilePath(file, i)
