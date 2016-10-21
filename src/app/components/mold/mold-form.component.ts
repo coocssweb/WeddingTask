@@ -20,13 +20,11 @@ export class MoldFormComponent implements OnInit {
 
     //当前选择项
     selectedMold = {
-      id: 2,
-      name: '海边',
-      count: 11
+      ID: 6
     }
 
     //输入值
-    inputMold = new Mold(0, '', 0)
+    inputMold = new Mold(0, '')
 
     //是否显示添加框
     isShowForm = false
@@ -37,8 +35,9 @@ export class MoldFormComponent implements OnInit {
 
 
       this.moldService.getMolds()
-        .then(
-          molds => this.moldList = molds)
+        .then((molds:any) => {
+          this.moldList = molds.results
+        })
     }
 
     ngOnInit(): void {
@@ -47,6 +46,15 @@ export class MoldFormComponent implements OnInit {
 
     //提交
     onSubmit(){
+      this.moldService.addMold(this.inputMold.sceneName).then(
+        result=>{
+
+
+
+          this.inputMold = new Mold(0, '')
+          this.isShowForm = false
+        }
+      )
 
     }
 
@@ -59,5 +67,4 @@ export class MoldFormComponent implements OnInit {
     onShowForm(isShowForm){
       this.isShowForm = isShowForm
     }
-
 }

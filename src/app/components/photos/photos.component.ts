@@ -62,7 +62,7 @@ export class PhotosComponent implements OnInit{
   //读取图片预览图地址
   readFilePath(file, index){
     var reader = new FileReader();
-    reader.onload = function(evt){
+    reader.onload = function(evt: any){
       (<HTMLInputElement>document.getElementById('image-'+index)).src = evt.target.result
     }
     reader.readAsDataURL(file);

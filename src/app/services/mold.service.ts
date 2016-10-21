@@ -9,7 +9,7 @@ import { DOMAIN } from '../constant/config'
 @Injectable()
 export class MoldService {
 
-  private moldUrl = 'http://b-test.idaoying.com/scenes';
+  private moldUrl = 'http://b-test.idaoying.com/photoInfos/3/photoScenes';
 
   constructor (private http: Http) {}
 
@@ -22,20 +22,43 @@ export class MoldService {
 
     return this.http.get(this.moldUrl, { headers: headers })
       .toPromise()
-      .then(this.extractData)
-      .catch(this.handleError);
+      .then((res: Response)=>{
+        let body = res.json()
+        return body || { }
+      })
+      .catch((error: any)=>{
+        let errMsg = (error.message) ? error.message :
+          error.status ? `${error.status} - ${error.statusText}` : 'Server error';
+        console.error(errMsg); // log to console instead
+        return Promise.reject(errMsg);
+      })
   }
 
-  private extractData(res: Response) {
-    let body = res.json();
-    return body || { };
+  addMold(sceneName: string): Promise<Mold[]>{
+    let headers = new Headers();
+
+    headers.append('X-Requested-With', 'XMLHttpRequest')
+    headers.append('Content-Type', 'application/json; charset=UTF-8')
+    headers.append('Accept','application/json')
+
+    let body = JSON.stringify({sceneName})
+
+
+
+    return this.http.post(this.moldUrl, body, { headers: headers })
+      .toPromise()
+      .then((res: Response)=>{
+        let body = res.json()
+        return body || { }
+      })
+      .catch((error: any)=>{
+        let errMsg = (error.message) ? error.message :
+          error.status ? `${error.status} - ${error.statusText}` : 'Server error';
+        console.error(errMsg); // log to console instead
+        return Promise.reject(errMsg);
+      })
+
   }
 
-  private handleError (error: any) {
-    let errMsg = (error.message) ? error.message :
-      error.status ? `${error.status} - ${error.statusText}` : 'Server error';
-    console.error(errMsg); // log to console instead
-    return Promise.reject(errMsg);
-  }
 }
 
