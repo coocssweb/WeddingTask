@@ -9,15 +9,18 @@ import { DOMAIN } from '../constant/config'
 @Injectable()
 export class MoldService {
 
-  private moldUrl = 'http://localhost:8080/data-test/list.json';
+  private moldUrl = 'http://b-test.idaoying.com/scenes';
 
   constructor (private http: Http) {}
 
   getMolds(): Promise<Mold[]> {
-    let headers = new Headers({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
-    let options = new RequestOptions({ headers: headers });
+    let headers = new Headers();
 
-    return this.http.get(this.moldUrl, options)
+    headers.append('X-Requested-With', 'XMLHttpRequest')
+    headers.append('Content-Type', 'application/json; charset=UTF-8')
+    headers.append('Accept','application/json')
+
+    return this.http.get(this.moldUrl, { headers: headers })
       .toPromise()
       .then(this.extractData)
       .catch(this.handleError);
@@ -35,3 +38,4 @@ export class MoldService {
     return Promise.reject(errMsg);
   }
 }
+

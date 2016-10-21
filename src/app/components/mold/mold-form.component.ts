@@ -34,6 +34,8 @@ export class MoldFormComponent implements OnInit {
     constructor(private moldService: MoldService) { }
 
     getMolds(): void {
+
+
       this.moldService.getMolds()
         .then(
           molds => this.moldList = molds)
