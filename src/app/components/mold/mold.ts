@@ -5,8 +5,10 @@
 
 export class Mold{
     constructor(
-        public ID: number,
-        public sceneName: string
+        public id: number,
+        public sceneName: string,
+        public rawNum: number,
+        public checkedNum: number
     ){
 
     }

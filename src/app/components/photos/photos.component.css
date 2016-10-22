@@ -41,6 +41,7 @@
 
 .photo-time{
   position: absolute;
+  z-index: 2;
   top: 10px;
   left: 10px;
   background-color: rgba(0,0,0,0.5);
@@ -56,17 +57,47 @@
   line-height: 30px;
   width: 30px;
   text-align: center;
-  background-color: #ffffff;
+  background-color: #f12b2b;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
   border-radius: 50%;
-  color: #000000;
-  border: 1px solid #999;
+  color: #ffffff;
+  border: 1px solid #de2222;
   z-index: 2;
 }
 .btn-remove:hover{
-  background-color: #efefef;
+  background-color: #fb5555;
 }
+
+.success-box{
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 147px;
+  line-height: 147px;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.6);
+}
+.success-icon{
+  position: absolute;
+  height: 50px;
+  line-height: 50px;
+  width: 50px;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.6);
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+  color: #24b500;
+  font-size: 20px;
+  z-index: 2;
+  left: 50%;
+  top: 50%;
+  margin-left: -25px;
+  margin-top: -25px;
+}
+
 .photo-info{
   position: relative;
   padding:10px;
@@ -100,7 +131,7 @@
   margin-right: 5px;
 }
 
-.waiting-box{
+.waiting-box, .uploading-box{
   position: absolute;
   top: 0px;
   left: 0px;
@@ -112,3 +143,49 @@
   background-color: rgba(0, 0, 0, 0.3);
 }
 
+.uploading-box{
+  background-color: rgba(220, 202, 77, 0.7);
+}
+
+.w_loading{
+  -webkit-animation: loading .8s linear infinite;
+  -moz-animation: loading 0.8s linear infinite;
+  -o-animation: loading 0.8s linear infinite;
+  animation: loading 0.8s linear infinite;
+}
+
+@-webkit-keyframes loading {
+  0% {
+    -webkit-transform:rotate(0deg);
+  }
+  100% {
+    -webkit-transform:rotate(360deg);
+  }
+}
+
+@-moz-keyframes loading {
+  0% {
+    -o-transform:rotate(0deg);
+  }
+  100% {
+    -o-transform:rotate(360deg);
+  }
+}
+
+@-moz-keyframes loading {
+  0% {
+    -moz-transform:rotate(0deg);
+  }
+  100% {
+    -moz-transform:rotate(360deg);
+  }
+}
+
+@keyframes loading {
+  0% {
+    transform:rotate(0deg);
+  }
+  100% {
+    transform:rotate(360deg);
+  }
+}

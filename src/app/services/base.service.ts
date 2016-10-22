@@ -1,26 +1,20 @@
-import { Injectable } from '@angular/core'
-import { Http, Response } from '@angular/http'
-import { Headers, RequestOptions } from '@angular/http'
-import { Mold } from '../components/mold/mold'
-import { DOMAIN } from '../constant/config'
+import { Injectable } from '@angular/core';
+import { Http, Response } from '@angular/http';
+import { Headers, RequestOptions } from '@angular/http';
+
 
 @Injectable()
-export class MoldService {
-
-  private moldUrl = DOMAIN + '/photoInfos/3/photoScenes/actions/statistics';
-
-
+export class BaseService {
   constructor(private http:Http) {
   }
 
-  getMolds():Promise<Mold[]> {
-    let headers = new Headers()
-
+  get({url}) {
+    let headers = new Headers();
     headers.append('X-Requested-With', 'XMLHttpRequest')
     headers.append('Content-Type', 'application/json; charset=UTF-8')
     headers.append('Accept', 'application/json')
 
-    return this.http.get(this.moldUrl, {headers: headers})
+    return this.http.get(url, {headers: headers})
       .toPromise()
       .then((res:Response)=> {
         let body = res.json()
@@ -28,23 +22,24 @@ export class MoldService {
       })
       .catch((error:any)=> {
         let errMsg = (error.message) ? error.message :
-          error.status ? `${error.status} - ${error.statusText}` : 'Server error'
+          error.status ? `${error.status} - ${error.statusText}` : 'Server error';
         console.error(errMsg); // log to console instead
         return Promise.reject(errMsg);
       })
   }
 
-  addMold(sceneName:string):Promise<Mold[]> {
+
+  post(url, params) {
     let headers = new Headers();
 
     headers.append('X-Requested-With', 'XMLHttpRequest')
     headers.append('Content-Type', 'application/json; charset=UTF-8')
     headers.append('Accept', 'application/json')
 
-    let body = JSON.stringify({sceneName})
+    let body = JSON.stringify(params)
 
 
-    return this.http.post( DOMAIN + '/photoInfos/3/photoScenes' , body, {headers: headers})
+    return this.http.post(url, body, {headers: headers})
       .toPromise()
       .then((res:Response)=> {
         let body = res.json()
@@ -56,8 +51,12 @@ export class MoldService {
         console.error(errMsg); // log to console instead
         return Promise.reject(errMsg);
       })
+  }
+
+  delete(url) {
 
   }
+
 
 }
 

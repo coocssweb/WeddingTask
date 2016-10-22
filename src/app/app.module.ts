@@ -6,6 +6,7 @@ import { MoldFormComponent } from './components/mold/mold-form.component'
 import { UploadComponent } from './components/upload/upload.component'
 import { PhotosComponent } from './components/photos/photos.component'
 import { ConfirmComponent } from './common/confirm/confirm.component'
+
 import { HttpModule, JsonpModule } from '@angular/http'
 @NgModule({
   declarations: [

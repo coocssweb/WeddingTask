@@ -1,1 +1,1 @@
-export const DOMAIN = 'http://192.168.1.173:8080'
+export const DOMAIN = 'http://b-test.idaoying.com'

@@ -3,11 +3,12 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 @Component({
   selector: 'upload',
   templateUrl: 'upload.component.html',
-  styleUrls: ['./upload.component.css']
+  styleUrls: ['./upload.component.css'],
 })
+
 export class UploadComponent {
 
-  @Output() previewPhoto = new EventEmitter()
+  @Output() uploadPhotoCb = new EventEmitter()
 
   //上传按钮点击事件
   onClick(){
@@ -27,7 +28,7 @@ export class UploadComponent {
 
 
     //回调预览图片事件
-    this.previewPhoto.emit(fileList)
+    this.uploadPhotoCb.emit(fileList)
   }
 
 }
