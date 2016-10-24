@@ -5,6 +5,8 @@ import { Customer } from '../customer/customer'
 import { PhotoService } from '../../services/photos.service'
 import { CustomerService } from '../../services/customer.service'
 import StringUtils from '../../utils/stringUtils'
+import { AfterViewInit, ViewChild } from '@angular/core'
+import { MoldFormComponent } from '../mold/mold-form.component'
 
 @Component({
   selector: 'photos',
@@ -12,13 +14,24 @@ import StringUtils from '../../utils/stringUtils'
   styleUrls: ['./photos.component.css'],
   providers: [PhotoService, CustomerService]
 })
-export class PhotosComponent implements OnInit {
+export class PhotosComponent implements [OnInit, AfterViewInit] {
 
+  @ViewChild(MoldFormComponent)
+  private moldFormComponent: MoldFormComponent
 
   confirmTitle:string = '确认删除?';
 
   confirmContent:string = '确认删除这条数据吗？'
 
+  //排序项
+  sortByItem = ''
+
+  sort = ''
+
+  sortByKey = ''
+
+  //是否正在加载数据
+  isLoadingData = false
 
   //是否显示删除确认框
   isShowConfirm = false
@@ -65,13 +78,20 @@ export class PhotosComponent implements OnInit {
    * 获取图片列表
    */
   getPhotos(sceneId):void {
-    this.photoService.getPhotos(sceneId).then((photos:any) => {
+    //设置正在加载数据状态
+    this.isLoadingData = true
+
+    //请求加载图片列表
+    this.photoService.getPhotos(sceneId, this.sortByKey, this.sort).then((photos:any) => {
+      this.isLoadingData = false
+
+      //设置返回数据
       this.photoList = photos.results
     })
   }
 
   /**
-   * 获取Token
+   * 获取七牛Token
    */
   getToken():void {
     this.photoService.getToken()
@@ -94,7 +114,11 @@ export class PhotosComponent implements OnInit {
    * @param photo
    */
   onDelete(photo) {
+
+    //显示删除确认框
     this.isShowConfirm = true
+
+    //设置当前要删除的图片信息
     this.removePhoto = photo
   }
 
@@ -104,6 +128,7 @@ export class PhotosComponent implements OnInit {
    */
   onConfirm() {
 
+    //从列表中移除要删除的图片
     this.photoService.delete(this.removePhoto.id.toString()).then((response)=> {
       for (let i = 0; i < this.photoList.length; i++) {
         if (this.photoList[i].id === this.removePhoto.id) {
@@ -111,9 +136,12 @@ export class PhotosComponent implements OnInit {
           break
         }
       }
-    })
 
-    this.isShowConfirm = false
+      this.moldFormComponent.getMolds()
+
+      //关闭删除确认框
+      this.isShowConfirm = false
+    })
   }
 
   /**
@@ -132,15 +160,20 @@ export class PhotosComponent implements OnInit {
 
     //设置等待状态
     this.fileList[i].isWaiting = false
+    //设置当前图片为正在上传状态
     this.fileList[i].isUploading = true
 
+    //请求七牛上传接口
     let xhr = new XMLHttpRequest()
     xhr.open('post', 'http://upload.qiniu.com', true)
 
+    //临时存储this
     let _this:any = this
 
+    //当前正在上传的图片
     let file = this.fileList[i]
 
+    //生成图片上传的key
     let key = this.customer.groupId+'/'+ this.customer.id +'/raw/'+Date.now().toString()
 
     xhr.onreadystatechange = function () {
@@ -151,8 +184,7 @@ export class PhotosComponent implements OnInit {
         _this.fileList[i].isUploading = false
         _this.fileList[i].isSuccess = true
 
-        //请求保存数据
-
+        //请求保存原片信息
         _this.photoService.save(
           {
             imgKey: key,
@@ -164,10 +196,13 @@ export class PhotosComponent implements OnInit {
         ).then((response: any)=> {
             //移除当前项目
             _this.fileList.pop()
+            //原片列表插入刚上传的图片信息
 
-            _this.photoList.unshift(
-              new Photo(response.id,response.imgIndex, response.imgName, response.imgKey, response.imgSize, response.imgShootTime, response.remark, true )
-            )
+            setTimeout(function(){
+              _this.photoList.unshift(
+                new Photo(response.id,response.imgIndex, response.imgName, response.imgKey, response.imgSize, response.imgShootTime, response.remark, true )
+              )
+            }, 100)
 
             if (_this.fileList.length) {
               _this.onUpload(_this.fileList.length - 1)
@@ -178,6 +213,7 @@ export class PhotosComponent implements OnInit {
     }
 
 
+    //构造Formdata上传信息
     var formData = new FormData()
     formData.append('name', file.imgName)
     formData.append('key', key)
@@ -187,12 +223,37 @@ export class PhotosComponent implements OnInit {
     xhr.send(formData)
   }
 
+  /**
+   * 切换原片场景
+   * @param mold
+     */
   onTabMoldCb(mold){
-    this.currentMold = mold
-    this.getPhotos(mold.id)
 
+    //选择当前场景
+    if(this.currentMold &&  mold.id === this.currentMold.id){
+      return
+    }
+
+    //设置当前原片场景
+    this.currentMold = mold
+    //置空原片列表
+    this.photoList = []
+    //获取当前场景原片列表
+    this.getPhotos(mold.id)
   }
 
+  onDeleteMoldCb(){
+
+    this.photoList = []
+
+    let currentMoldId  = null
+
+    if(this.currentMold && this.currentMold.id != 0){
+      currentMoldId = this.currentMold.id
+    }
+
+    this.getPhotos(currentMoldId)
+  }
 
   /**
    * 图片预览
@@ -201,6 +262,8 @@ export class PhotosComponent implements OnInit {
   uploadPhotoCb(fileList) {
     for (let i = 0; i < fileList.length; i++) {
       let file = fileList[i]
+
+      //倒叙插入等待上传的原片
       this.fileList.unshift({
         id: 0,
         imgKey: '',
@@ -218,6 +281,17 @@ export class PhotosComponent implements OnInit {
     if (!this.isUploading) {
       this.onUpload(this.fileList.length - 1)
     }
+  }
+
+  sortBy(key, sortItem){
+    if(sortItem === this.sortByItem){
+      this.sort = this.sort === 'asc'?'desc':'asc'
+    }else{
+      this.sort = 'asc'
+    }
+    this.sortByItem = sortItem
+    this.sortByKey = key
+    this.getPhotos(this.currentMold ? this.currentMold.id : null)
 
   }
 }

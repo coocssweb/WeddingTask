@@ -8,7 +8,32 @@
   margin-top: 20px;
 }
 
+.setting-item{
+  margin-left: 20px;
+}
+
 .mold-item{
   float: left;
   margin-right: 10px;
+  position: relative;
+}
+
+.btn-remove{
+  position: absolute;
+  right: -8px;
+  top: -8px;
+  height: 20px;
+  line-height: 20px;
+  width: 20px;
+  text-align: center;
+  background-color: #f12b2b;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+  color: #ffffff;
+  border: 1px solid #de2222;
+  z-index: 2;
+}
+.btn-remove:hover{
+  background-color: #fb5555;
 }

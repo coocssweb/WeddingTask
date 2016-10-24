@@ -19,7 +19,7 @@ export class PhotoService {
    * 获取图片列表
    * @returns {any|Promise<T|Promise<never>|Promise<T>>|Promise<Promise<never>|Promise<T>>|Function|webdriver.promise.Promise<R>|Promise<R>}
    */
-  getPhotos( sceneId ): Promise<Photo[]> {
+  getPhotos( sceneId, sortBy, sortOrder ): Promise<Photo[]> {
     let headers = new Headers();
 
     headers.append('X-Requested-With', 'XMLHttpRequest')
@@ -29,7 +29,12 @@ export class PhotoService {
     let url = this.photoUrl
 
     if(sceneId){
-      url = this.photoUrl +'&_filter_eq_photoSceneId='+sceneId
+      url += '&_filter_eq_photoSceneId='+sceneId
+
+    }
+
+    if(sortBy){
+      url += '&' + sortBy+'='+sortOrder
     }
 
     return this.http.get(url, {headers: headers})

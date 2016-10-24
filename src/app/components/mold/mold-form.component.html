@@ -3,12 +3,22 @@
       <ul class="mold-list clearfix">
           <li class="mold-item" *ngFor="let mold of moldList" (click)="onSelectMold(mold)">
             <span class="btn btn-default" [class.btn-success]="mold.id === selectedMold.id">{{mold.sceneName}} ( {{mold.rawNum?mold.rawNum:0}} )</span>
+            <a href="javascript:;" [hidden]="!isSetting || mold.id == 0" class="btn-remove" (click)="onDeleteMold(mold,$event)">
+              <span class="glyphicon glyphicon-minus"></span>
+            </a>
           </li>
-          <li class="mold-item">
-            <button type="button" class="btn btn-default" (click)="onShowForm(true)">
-              <span class="glyphicon glyphicon-plus"></span>
+          <li class="mold-item setting-item">
+            <button type="button" class="btn btn-default" (click)="onToggleSetting()">
+              <span class="glyphicon glyphicon-cog"></span>
             </button>
           </li>
+
+        <li class="mold-item" [hidden]="!isSetting">
+          <button type="button" class="btn btn-default" (click)="onShowForm(true)">
+            <span class="glyphicon glyphicon-plus"></span>
+          </button>
+
+        </li>
       </ul>
   </div>
 
@@ -30,3 +40,13 @@
       </form>
   </div>
 </div>
+
+
+<confirm
+  [hidden]="!isShowDeleteConfirm"
+  [title] ="confirmTitle"
+  [content]="confirmContent"
+  (confirm)="onConfirmDelete($event)"
+  (cancel)="onCancelDelete($event)"
+>
+</confirm>
