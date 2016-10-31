@@ -1,62 +1,96 @@
-import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
-import { Headers, RequestOptions } from '@angular/http';
+import {Headers, RequestOptions} from '@angular/http'
+import {Response, Http} from '@angular/http'
+import { DOMAIN } from '../constant/config'
+
+export class BaseService{
+    private http: Http
+    constructor(http: Http) {
+        this.http = http
+    }
+
+    get(url): Promise<any> {
+        let headers = new Headers()
+
+        headers.append('X-Requested-With', 'XMLHttpRequest')
+        headers.append('Content-Type', 'application/json; charset=UTF-8')
+        headers.append('Accept', 'application/json')
+
+        return this.http.get(DOMAIN + url, {headers: headers})
+            .toPromise()
+            .then((res: Response)=> {
+                let body = res.json()
+                return body || {}
+            })
+            .catch((error: any)=> {
+                let errMsg = (error.message) ? error.message :
+                    error.status ? `${error.status} - ${error.statusText}` : 'Server error'
+                console.error(errMsg)
+                return Promise.reject(errMsg);
+            })
+    }
 
 
-@Injectable()
-export class BaseService {
-  constructor(private http:Http) {
-  }
+    post(url, body): Promise<any>{
+        let headers = new Headers();
+        headers.append('X-Requested-With', 'XMLHttpRequest')
+        headers.append('Content-Type', 'application/json; charset=UTF-8')
+        headers.append('Accept', 'application/json')
 
-  get({url}) {
-    let headers = new Headers();
-    headers.append('X-Requested-With', 'XMLHttpRequest')
-    headers.append('Content-Type', 'application/json; charset=UTF-8')
-    headers.append('Accept', 'application/json')
-
-    return this.http.get(url, {headers: headers})
-      .toPromise()
-      .then((res:Response)=> {
-        let body = res.json()
-        return body || {}
-      })
-      .catch((error:any)=> {
-        let errMsg = (error.message) ? error.message :
-          error.status ? `${error.status} - ${error.statusText}` : 'Server error';
-        console.error(errMsg); // log to console instead
-        return Promise.reject(errMsg);
-      })
-  }
+        return this.http.post( DOMAIN + url , body, {headers: headers})
+            .toPromise()
+            .then((res:Response)=> {
+                let body = res.json()
+                return body || {}
+            })
+            .catch((error:any)=> {
+                let errMsg = (error.message) ? error.message :
+                    error.status ? `${error.status} - ${error.statusText}` : 'Server error'
+                console.error(errMsg)
+                return Promise.reject(errMsg)
+            })
+    }
 
 
-  post(url, params) {
-    let headers = new Headers();
+    delete(url, ids): Promise<any>{
+        let headers = new Headers();
+        headers.append('X-Requested-With', 'XMLHttpRequest')
+        headers.append('Content-Type', 'application/json; charset=UTF-8')
+        headers.append('Accept', 'application/json')
 
-    headers.append('X-Requested-With', 'XMLHttpRequest')
-    headers.append('Content-Type', 'application/json; charset=UTF-8')
-    headers.append('Accept', 'application/json')
+        return this.http.delete(DOMAIN + url + ids,  {headers: headers})
+            .toPromise()
+            .then((res:Response)=> {
 
-    let body = JSON.stringify(params)
+                if(res.status.toString().startsWith('2')){
+                    return {}
+                }
 
+            })
+            .catch((error:any)=> {
+                let body = error.json()
 
-    return this.http.post(url, body, {headers: headers})
-      .toPromise()
-      .then((res:Response)=> {
-        let body = res.json()
-        return body || {}
-      })
-      .catch((error:any)=> {
-        let errMsg = (error.message) ? error.message :
-          error.status ? `${error.status} - ${error.statusText}` : 'Server error'
-        console.error(errMsg); // log to console instead
-        return Promise.reject(errMsg);
-      })
-  }
+                return body || {}
+            })
+    }
 
-  delete(url) {
+    put(url): Promise<any>{
+        let headers = new Headers();
+        headers.append('X-Requested-With', 'XMLHttpRequest')
+        headers.append('Content-Type', 'application/json; charset=UTF-8')
+        headers.append('Accept', 'application/json')
 
-  }
-
-
+        return this.http.put(url, {headers: headers})
+            .toPromise()
+            .then((res: Response)=> {
+                let body = res.json()
+                return body || {}
+            })
+            .catch((error: any)=> {
+                let errMsg = (error.message) ? error.message :
+                    error.status ? `${error.status} - ${error.statusText}` : 'Server error';
+                console.error(errMsg); // log to console instead
+                return Promise.reject(errMsg);
+            })
+    }
 }
 

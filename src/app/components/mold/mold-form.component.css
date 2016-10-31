@@ -1,3 +1,12 @@
+.mold-outer{
+  border-radius: 4px;
+  box-shadow: inset 0 1px 0 #FFF,0 1px 1px rgba(0,0,0,.1);
+  -webkit-box-shadow: inset 0 1px 0 #FFF,0 1px 1px rgba(0,0,0,.1);
+  background-color: #fafafa;
+  border: 1px solid rgba(0,0,0,0.1);
+  padding: 0px 20px;
+  margin-top: 20px;
+}
 .mold-box{
   padding: 20px 0px;
   float: left;
@@ -36,4 +45,42 @@
 }
 .btn-remove:hover{
   background-color: #fb5555;
+}
+
+.btn-submit-box{
+  float: right;
+}
+
+.btn-submit{
+  background: #E53E49;
+  background: linear-gradient( #E53E49, #D43636);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.08),0 1px 0 rgba(255,255,255,.3);
+  text-shadow: 0 -1px 0 rgba(0,0,0,.1);
+  color: #fff;
+  border: 1px solid #C90000;
+  color: #FFFFFF;
+  display: inline-block;
+  padding: 5px 20px;
+  text-decoration: none;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  margin-top: 20px;
+}
+
+.mold-options{
+  margin-top: 10px;
+}
+.mold-options label{
+  color: #999999;
+  font-size: 12px;
+}
+
+.mold-options a{
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.form-scene{
+  padding-top: 20px;
 }

@@ -5,14 +5,14 @@
 
 export class Photo{
   constructor(
-    public id: number,
-    public imgIndex: number,
-    public imgName: string,
-    public imgKey: string,
-    public imgSize: number,
-    public imgShootTime: string,
-    public remark: string,
-    public isSuccess: boolean
+      public id: number,
+      public imgIndex: number,
+      public imgName: string,
+      public imgKey: string,
+      public imgSize: number,
+      public imgShootTime: string,
+      public remark: string,
+      public isSuccess: boolean
   ){
 
   }

@@ -5,10 +5,10 @@
 
 export class Customer{
   constructor(
-    public id: number,
-    public name: string,
-    public groupId: number,
-    public headImage: string
+      public id: number,
+      public name: string,
+      public groupId: number,
+      public headImage: string
   ){
 
   }

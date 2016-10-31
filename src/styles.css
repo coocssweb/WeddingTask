@@ -34,7 +34,11 @@ ul, li {
   padding: 0px;
 }
 
-.none-data{
-  height: 213px;
+.none-data {
+  height: 300px;
+  width: 350px;
+  margin: 0px auto;
+  margin-top: 60px;
   background: url('../images/none-data.png') center top no-repeat;
+  background-size: cover;
 }

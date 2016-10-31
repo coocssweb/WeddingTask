@@ -4,7 +4,7 @@ import './rxjs-operatators.ts'
 @Component({
   selector: 'app-root',
   template: `
-    <photos></photos>
+    <index></index>
   `
 })
 export class AppComponent {
