@@ -36,14 +36,13 @@ export class PhotosComponent implements [OnInit, AfterViewInit] {
     //当前要删除的图片信息
     removePhoto: Photo
 
-    //是否正在上传
-    isUploading = false
-
     //当前场景
     currentMold: Mold
 
+    //是否查看大图
     isPreview: boolean = false
 
+    //当前大图Index
     previewIndex: number
 
     /**
@@ -72,7 +71,7 @@ export class PhotosComponent implements [OnInit, AfterViewInit] {
             this.isLoadingData = false
 
             //设置返回数据
-            this.photoList = photos.results
+            this.photoList = photos.results?photos.results:[]
         })
     }
 
@@ -182,6 +181,34 @@ export class PhotosComponent implements [OnInit, AfterViewInit] {
 
     onClosePreview() {
         this.isPreview = false
+    }
+
+    /**
+     * 选择图片回调
+     * @param fileList
+     */
+    setFileListCb(fileList){
+        this.fileList = fileList
+    }
+
+    /**
+     * 上传图片回调
+     * @param index
+     */
+    uploadFileCb(response){
+        //移除上传成功图片
+        this.fileList.pop()
+        //原片列表插入刚上传的图片信息
+        this.photoList.unshift(
+            new Photo(response.id, response.imgIndex, response.imgName, response.imgKey,
+                response.imgSize, response.imgShootTime,
+                response.remark, true)
+        )
+
+        //从新获取统计信息
+        if(!this.fileList.length){
+            this.moldFormComponent.getMolds()
+        }
     }
 
 }

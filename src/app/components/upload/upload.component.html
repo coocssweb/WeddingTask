@@ -5,3 +5,9 @@
   <div class="upload-label">你可以把原片直接拖入这里</div>
   <input type="file" multiple class="file-input" id="file-upload" (change)="onFileChange($event)" />
 </div>
+<tip [title]="'提示信息'"
+     *ngIf="isTip"
+     (confirm)="onConfirm($event)"
+>
+  请选择场景,在上传图片
+</tip>

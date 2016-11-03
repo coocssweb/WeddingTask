@@ -5,7 +5,9 @@
     >
     </mold-form>
     <upload
-            (uploadPhotoCb)="uploadPhotoCb($event)"
+            [mold]="currentMold"
+            (setFileListCb)="setFileListCb($event)"
+            (uploadFileCb)="uploadFileCb($event)"
             *ngIf="moldFormComponent.moldStatus===0"
     >
     </upload>

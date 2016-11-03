@@ -13,6 +13,7 @@ import {TabItemComponent} from './common/tabs/tabItem.component'
 import {CheckedComponent} from './components/checked/checked.component'
 import {MessageComponent} from './common/message/message.component'
 import {ViewerComponent} from './components/viewer/viewer.component'
+import {TipComponent} from './common/tip/tip.component'
 
 import {HttpModule, JsonpModule} from '@angular/http'
 @NgModule({
@@ -28,7 +29,8 @@ import {HttpModule, JsonpModule} from '@angular/http'
         TabItemComponent,
         CheckedComponent,
         MessageComponent,
-        ViewerComponent
+        ViewerComponent,
+        TipComponent
     ],
     imports: [
         BrowserModule,
