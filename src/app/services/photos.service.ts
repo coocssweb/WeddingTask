@@ -45,7 +45,7 @@ export class PhotoService extends BaseService {
      * @param ids
      * @returns
      */
-    delete(ids) {
+    remove(ids) {
         return this.delete('/photoInfos/3/photoRaws/', ids)
     }
 
@@ -53,8 +53,8 @@ export class PhotoService extends BaseService {
      * 获取七牛Token
      * @returns
      */
-    getToken(customer_id): Promise<String> {
-        return this.get('/photo/uptoken/raw?customerId=' + customer_id)
+    getToken(customer_id, count): Promise<String> {
+        return this.get('/photo/uptoken/raw?customerId=' + customer_id + '&genNum=' +count)
     }
 
 
