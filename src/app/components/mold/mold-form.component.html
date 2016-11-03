@@ -1,0 +1,65 @@
+<div class="mold-outer clearfix">
+    <div class="mold-box">
+        <ul class="mold-list clearfix">
+            <li class="mold-item" *ngFor="let mold of moldList" (click)="onSelectMold(mold)">
+                <span class="btn btn-default" [class.btn-success]="mold.id === selectedMold.id">{{mold.sceneName}} ( {{mold.rawNum?mold.rawNum:0}} )</span>
+                <a href="javascript:;" [hidden]="!isSetting || mold.id == 0" class="btn-remove" (click)="onDeleteMold(mold,$event)">
+                    <span class="glyphicon glyphicon-minus"></span>
+                </a>
+            </li>
+
+            <li class="mold-item setting-item" [hidden]="moldStatus===1">
+                <button type="button" class="btn btn-default" (click)="onToggleSetting()">
+                    <span class="glyphicon glyphicon-cog"></span>
+                </button>
+            </li>
+
+            <li class="mold-item" [hidden]="!isSetting">
+                <button type="button" class="btn btn-default" (click)="onShowForm(true)">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </button>
+
+            </li>
+        </ul>
+    </div>
+    <div [hidden]="moldStatus===1" class="btn-submit-box">
+        <a href="javascript:;" class=" btn-submit" (click)="onFinish()">提交</a>
+    </div>
+</div>
+
+
+<confirm
+    [hidden]="!isShowDeleteConfirm"
+    [title] ="'确认删除?'"
+    (confirm)="onConfirmDelete($event)"
+    (cancel)="onCancelDelete($event)">
+    确认删除这个场景吗？
+</confirm>
+
+<my-dialog
+    [hidden]="!isShowForm"
+    [title] ="'添加场景'"
+    (confirm)="onSubmit($event)"
+    (cancel)="onShowForm(false, $event)">
+    <div class="form-horizontal form-scene">
+        <form (ngSubmit)="onSubmit()" #moldForm="ngForm">
+            <div class="form-group">
+                <label for="name" class="col-sm-2 control-label">场景名称</label>
+                <div class="col-sm-10">
+                    <input type="text"
+                           class="form-control"
+                           placeholder="请输入类型"
+                           autocomplete="off"
+                           id="name"
+                           required
+                           [(ngModel)]="inputMold.sceneName" name="sceneName">
+                    <div class="mold-options">
+                        <label>常用场景：</label>
+                        <a *ngFor="let option of moldOptions" href="javascript:;" (click)="setInputValue(option.sceneName)">{{option.sceneName}}</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</my-dialog>

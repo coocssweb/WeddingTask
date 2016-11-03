@@ -1,0 +1,44 @@
+body {
+  background-color: #ffffff;
+}
+
+.layout {
+  width: 1180px;
+  margin: 0px auto;
+}
+
+.header {
+  height: 120px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 0 0 rgba(0, 0, 0, .03);
+  background: url(../images/header_bg.jpg) center top no-repeat;
+  color: #ffffff;
+  background-size: cover;
+}
+
+.header-logo {
+  font-size: 22px;
+  font-weight: 700;
+  padding-top: 36px;
+}
+
+.footer {
+  background: #222;
+  padding: 20px 0px;
+  color: #ffffff;
+}
+
+ul, li {
+  list-style: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+.none-data {
+  height: 300px;
+  width: 350px;
+  margin: 0px auto;
+  margin-top: 60px;
+  background: url('../images/none-data.png') center top no-repeat;
+  background-size: cover;
+}

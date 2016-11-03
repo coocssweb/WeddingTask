@@ -1,0 +1,116 @@
+<div class="layout">
+    <mold-form
+            (onTabMoldCb)="onTabMoldCb($event)"
+            (onDeleteMoldCb)="onDeleteMoldCb($event)"
+    >
+    </mold-form>
+    <upload
+            [mold]="currentMold"
+            (setFileListCb)="setFileListCb($event)"
+            (uploadFileCb)="uploadFileCb($event)"
+            *ngIf="moldFormComponent.moldStatus===0"
+    >
+    </upload>
+
+    <div class="toolbar clearfix">
+        <div class="toolbar-form clearfix">
+            <span class="label-toolbar">排序规则:</span>
+            <a href="javascript:;" class="item-toolbar"
+               (click)="onSort('_sort_IMG_NAME','name')"
+               [class.item-toolbar-active]="sort.item === 'name'">
+                文件名
+                <span [hidden]="sort.item !== 'name'">
+          <span class="glyphicon" [class.glyphicon-arrow-up]="sort.order==='asc'"
+                [class.glyphicon-arrow-down]="sort.order==='desc'"></span>
+        </span>
+            </a>
+            <a href="javascript:;" class="item-toolbar"
+               (click)="onSort('_sort_IMG_SIZE','size')"
+               [class.item-toolbar-active]="sort.item === 'size'">
+                文件大小
+                <span [hidden]="sort.item !== 'size'">
+          <span class="glyphicon" [class.glyphicon-arrow-up]="sort.order==='asc'"
+                [class.glyphicon-arrow-down]="sort.order==='desc'"></span>
+        </span>
+            </a>
+            <a href="javascript:;" class="item-toolbar"
+               (click)="onSort('_sort_img_SHOOT_TIME','time')"
+               [class.item-toolbar-active]="sort.item === 'time'">
+                拍摄时间
+                <span [hidden]="sort.item !== 'time'">
+          <span class="glyphicon" [class.glyphicon-arrow-up]="sort.order==='asc'"
+                [class.glyphicon-arrow-down]="sort.order==='desc'"></span>
+        </span>
+            </a>
+        </div>
+    </div>
+
+    <div class="photo-list clearfix" (touchstart)="onTouch()">
+        <div class="photo-item" *ngFor="let photo of fileList;let i=index">
+            <div class="photo-content">
+                <a href="javascript:;" (click)="onDelete(photo)" class="btn-remove">
+                    <span class="glyphicon glyphicon-minus"></span>
+                </a>
+
+                <span class="photo-time">{{photo.imgShootTime}}</span>
+                <div class="photo-box">
+                    <div [hidden]="!photo.isSuccess" class="success-box">
+                        <div class="success-icon">
+                            <span class="glyphicon glyphicon-ok"></span>
+                        </div>
+                    </div>
+                    <div [hidden]="!photo.isWaiting" class="waiting-box">
+                        等待上传
+                    </div>
+
+                    <div [hidden]="!photo.isUploading" class="uploading-box">
+                        <span class="glyphicon glyphicon-refresh w_loading"></span>
+                        <span>上传中...</span>
+                    </div>
+
+                </div>
+                <div class="photo-info"><span class="photo-name">{{photo.imgName}}</span><span class="photo-size">{{photo.imgSize}}M</span>
+                </div>
+                <div class="photo-opinion"><span class="photo-label">客户意见:</span><span>{{photo.remark}}</span></div>
+            </div>
+        </div>
+
+        <div class="photo-item" *ngFor="let photo of photoList;let i=index">
+            <div class="photo-content">
+                <a href="javascript:;" (click)="onDelete(photo)"
+                   [hidden]="photo.isUploading || moldFormComponent.moldStatus===1" class="btn-remove">
+                    <span class="glyphicon glyphicon-minus"></span>
+                </a>
+                <span class="photo-time">{{photo.imgShootTime}}</span>
+                <div class="photo-box" (click)="onPreview(i)">
+
+                    <div [hidden]="!photo.isSuccess" class="success-box">
+                        <div class="success-icon">
+                            <span class="glyphicon glyphicon-ok"></span>
+                        </div>
+                    </div>
+
+                    <img src="http://oex701atk.bkt.clouddn.com/{{photo.imgKey}}?imageView2/2/w/500"
+                         class="photo-image"/>
+                </div>
+                <div class="photo-info"><span class="photo-name">原片##{{photo.imgIndex}}</span><span class="photo-size">{{photo.imgSize}}M</span>
+                </div>
+                <div class="photo-opinion"><span class="photo-label">客户意见:</span><span>{{photo.remark}}</span></div>
+            </div>
+        </div>
+    </div>
+    <div class="none-data" [hidden]="photoList.length!=0||fileList.length!=0 || isLoadingData"></div>
+</div>
+<confirm
+        [hidden]="!isShowConfirm"
+        [title]="'确认删除?'"
+        (confirm)="onConfirm($event)"
+        (cancel)="onCancel($event)"
+>
+    确认删除这个场景吗？
+</confirm>
+
+<viewer *ngIf="isPreview"
+        (close)="onClosePreview()"
+        [currentIndex]="previewIndex"
+        [photoList]="photoList"></viewer>
