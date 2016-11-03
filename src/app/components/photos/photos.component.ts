@@ -211,4 +211,17 @@ export class PhotosComponent implements [OnInit, AfterViewInit] {
         }
     }
 
+    savePhoto(params){
+      let requestParams = {
+        imgKey: params.imgKey,
+        imgName: params.imageName,
+        imgShootTime: params.imgShootTime,
+        imgSize: params.imgSize,
+        photoSceneId: params.photoSceneId
+      }
+      this.photoService.save(requestParams).then((response)=>{
+        params.done(response)
+      })
+    }
+
 }

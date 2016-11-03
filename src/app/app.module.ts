@@ -14,6 +14,7 @@ import {CheckedComponent} from './components/checked/checked.component'
 import {MessageComponent} from './common/message/message.component'
 import {ViewerComponent} from './components/viewer/viewer.component'
 import {TipComponent} from './common/tip/tip.component'
+import {TruingComponent} from './components/truings/truings.component'
 
 import {HttpModule, JsonpModule} from '@angular/http'
 @NgModule({
@@ -30,7 +31,8 @@ import {HttpModule, JsonpModule} from '@angular/http'
         CheckedComponent,
         MessageComponent,
         ViewerComponent,
-        TipComponent
+        TipComponent,
+        TruingComponent
     ],
     imports: [
         BrowserModule,

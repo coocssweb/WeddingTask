@@ -92,7 +92,7 @@ export class MoldFormComponent implements OnInit {
                 this.moldList = molds.photoSceneCounts
                 this.moldList = [totalMold].concat(this.moldList)
                 //设置状态
-                //this.moldStatus = molds.busRawStatus
+                this.moldStatus = molds.busRawStatus
             })
     }
 

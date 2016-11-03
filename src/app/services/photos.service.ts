@@ -50,15 +50,6 @@ export class PhotoService extends BaseService {
     }
 
     /**
-     * 获取七牛Token
-     * @returns
-     */
-    getToken(customer_id, count): Promise<String> {
-        return this.get('/photo/uptoken/raw?customerId=' + customer_id + '&genNum=' +count)
-    }
-
-
-    /**
      * 完成选片，提交
      * @param photoInfoId
      * @returns {Promise<any>}

@@ -1,7 +1,8 @@
 <tabs>
     <tabItem [isActive]="currentTab=='raw'" [disabled]="false" (click)="onTab('raw', true)">原片上传</tabItem>
     <tabItem [isActive]="currentTab=='checked'" [disabled]="photosComponent.moldFormComponent.moldStatus==0" (click)="onTab('checked', photosComponent.moldFormComponent.moldStatus==1)">客户选片</tabItem>
-    <tabItem [isActive]="currentTab=='truing'" [disabled]="true" (click)="onTab('truing', false)">精修片上传</tabItem>
+    <tabItem [isActive]="currentTab=='truing'" [disabled]="false" (click)="onTab('truing', true)">精修片上传</tabItem>
 </tabs>
 <photos [hidden]="currentTab!='raw'"></photos>
 <checked [hidden]="currentTab!='checked'"></checked>
+<truing [hidden]="currentTab!='truing'"></truing>

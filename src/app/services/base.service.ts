@@ -57,7 +57,12 @@ export class BaseService{
         headers.append('Content-Type', 'application/json; charset=UTF-8')
         headers.append('Accept', 'application/json')
 
-        return this.http.delete(DOMAIN + url + ids,  {headers: headers})
+        let deleteUrl = DOMAIN + url
+        if(ids){
+            deleteUrl += ids
+        }
+
+        return this.http.delete(deleteUrl,  {headers: headers})
             .toPromise()
             .then((res:Response)=> {
 

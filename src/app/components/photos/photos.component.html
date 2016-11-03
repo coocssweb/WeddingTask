@@ -6,6 +6,8 @@
     </mold-form>
     <upload
             [mold]="currentMold"
+            [title]="'你可以将原片拖拽到这里上传'"
+            [requireMold]="true"
             (setFileListCb)="setFileListCb($event)"
             (uploadFileCb)="uploadFileCb($event)"
             *ngIf="moldFormComponent.moldStatus===0"
@@ -107,7 +109,7 @@
         (confirm)="onConfirm($event)"
         (cancel)="onCancel($event)"
 >
-    确认删除这个场景吗？
+    确认删除这个原片吗？
 </confirm>
 
 <viewer *ngIf="isPreview"
