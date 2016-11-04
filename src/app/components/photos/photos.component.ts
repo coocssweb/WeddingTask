@@ -10,7 +10,7 @@ import {MoldFormComponent} from '../mold/mold-form.component'
     styleUrls: ['./photos.component.css'],
     providers: [PhotoService]
 })
-export class PhotosComponent implements [OnInit, AfterViewInit] {
+export class PhotosComponent implements OnInit, AfterViewInit {
 
     @ViewChild(MoldFormComponent)
     moldFormComponent: MoldFormComponent
@@ -57,6 +57,10 @@ export class PhotosComponent implements [OnInit, AfterViewInit] {
      */
     ngOnInit(): void {
         this.getPhotos(null)
+    }
+
+    ngAfterViewInit(){
+
     }
 
     /**
