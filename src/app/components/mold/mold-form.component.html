@@ -29,7 +29,7 @@
 
 
 <confirm
-    [hidden]="!isShowDeleteConfirm"
+    *ngIf="isShowConfirm"
     [title] ="'确认删除?'"
     (confirm)="onConfirmDelete($event)"
     (cancel)="onCancelDelete($event)">
@@ -37,7 +37,7 @@
 </confirm>
 
 <my-dialog
-    [hidden]="!isShowForm"
+    *ngIf="isShowForm"
     [title] ="'添加场景'"
     (confirm)="onSubmit($event)"
     (cancel)="onShowForm(false, $event)">
