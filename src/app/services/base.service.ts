@@ -84,7 +84,7 @@ export class BaseService{
         headers.append('Content-Type', 'application/json; charset=UTF-8')
         headers.append('Accept', 'application/json')
 
-        return this.http.put(url, {headers: headers})
+        return this.http.put( DOMAIN + url, {headers: headers})
             .toPromise()
             .then((res: Response)=> {
                 let body = res.json()

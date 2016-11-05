@@ -1,5 +1,6 @@
 <div class="layout">
   <upload
+    *ngIf="busTruingStatus == 0"
     [title]="'请选择精修片，进行上传'"
     [btnText]="'上传精修片'"
     (setFileListCb)="setFileListCb($event)"
@@ -10,6 +11,8 @@
 
   <div class="toolbar clearfix">
     <div class="toolbar-form clearfix">
+
+
       <span class="label-toolbar">排序规则:</span>
       <a href="javascript:;" class="item-toolbar"
          (click)="onSort('_sort_IMG_NAME','name')"
@@ -52,9 +55,10 @@
             <span class="glyphicon glyphicon-refresh w_loading"></span>
             <span>上传中...</span>
           </div>
-
+          <span class="photo-name">{{photo.imgName}}</span>
         </div>
-        <div class="photo-info"><span class="photo-name">{{photo.imgName}}</span><span class="photo-size">{{photo.imgSize}}M</span>
+        <div class="photo-info">
+          <span class="photo-version">1</span><span class="photo-size">{{photo.imgSize}}M</span>
         </div>
       </div>
     </div>
@@ -62,7 +66,7 @@
     <div class="photo-item" *ngFor="let photo of photoList;let i=index">
       <div class="photo-content">
         <a href="javascript:;" (click)="onDelete(photo)"
-           [hidden]="photo.isUploading " class="btn-remove">
+           [hidden]="photo.isUploading || busTruingStatus == 1" class="btn-remove">
           <span class="glyphicon glyphicon-minus"></span>
         </a>
         <div class="photo-box" (click)="onPreview(i)">
@@ -75,8 +79,11 @@
 
           <img src="http://oex701atk.bkt.clouddn.com/{{photo.imgKey}}?imageView2/2/w/500"
                class="photo-image"/>
+          <span class="photo-name">{{photo.imgName}}</span>
         </div>
-        <div class="photo-info"><span class="photo-name">{{photo.imgName}}</span><span class="photo-size">{{photo.imgSize}}M</span>
+        <div class="photo-info">
+          <span class="photo-version">{{photo.imgVersion}}</span>
+          <span class="photo-size">{{photo.imgSize}}M</span>
         </div>
       </div>
     </div>
@@ -96,3 +103,27 @@
         (close)="onClosePreview()"
         [currentIndex]="previewIndex"
         [photoList]="photoList"></viewer>
+
+<div class="fixed">
+  <div *ngIf="busTruingStatus == 0 && photoList.length > 0" class="alert alert-info alert-bottom" role="alert">
+    精修片已经传完了？请确认上传完成
+    <div class="btn-box">
+      <a href="javascript:;" class=" btn-submit" (click)="onFinish()">确认上传完成</a>
+    </div>
+  </div>
+
+  <div *ngIf="busTruingStatus == 1" class="alert alert-info alert-bottom" role="alert">
+    客户有修改？重新确认精修片
+    <div class="btn-box">
+      <a href="javascript:;" class=" btn-submit" (click)="onRedo()">重新确认精修片</a>
+    </div>
+  </div>
+</div>
+
+<tip
+  [title] ="tipInfo.title"
+  (confirm)="closeTip()"
+  *ngIf="tipInfo.on"
+>
+  {{tipInfo.message}}
+</tip>

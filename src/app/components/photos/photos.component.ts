@@ -57,6 +57,7 @@ export class PhotosComponent implements OnInit, AfterViewInit {
      */
     ngOnInit(): void {
         this.getPhotos(null)
+        
     }
 
     ngAfterViewInit(){
@@ -215,17 +216,21 @@ export class PhotosComponent implements OnInit, AfterViewInit {
         }
     }
 
+    /**
+     * 保持图片信息
+     * @param params
+     */
     savePhoto(params){
-      let requestParams = {
-        imgKey: params.imgKey,
-        imgName: params.imageName,
-        imgShootTime: params.imgShootTime,
-        imgSize: params.imgSize,
-        photoSceneId: params.photoSceneId
+        let requestParams = {
+          imgKey: params.imgKey,
+          imgName: params.imageName,
+          imgShootTime: params.imgShootTime,
+          imgSize: params.imgSize,
+          photoSceneId: params.photoSceneId
+        }
+        this.photoService.save(requestParams).then((response)=>{
+          params.done(response)
+        })
       }
-      this.photoService.save(requestParams).then((response)=>{
-        params.done(response)
-      })
-    }
 
 }

@@ -63,3 +63,11 @@
 
     </div>
 </my-dialog>
+
+<tip
+  [title]="'场景添加成功'"
+  (confirm)="onCloseTip()"
+  *ngIf="isShowTip"
+>
+  场景添加成功，请上传原片...
+</tip>

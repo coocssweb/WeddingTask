@@ -16,7 +16,7 @@ export class IndexComponent{
     private photosComponent: PhotosComponent
 
 
-    currentTab: string = 'raw'
+    currentTab: string = 'truing'
 
 
     onTab(tab, flag){

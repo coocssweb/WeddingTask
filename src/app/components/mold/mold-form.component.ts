@@ -49,6 +49,7 @@ export class MoldFormComponent implements OnInit {
     //当前要删除的场景
     removeMold: Mold
 
+    isShowTip: boolean = false
     /**
      * 构造函数
      * @param moldService
@@ -108,6 +109,7 @@ export class MoldFormComponent implements OnInit {
                 this.inputMold = new Mold(0, '', 0, 0)
                 this.isShowForm = false
                 this.moldList.push(new Mold(response.id, response.sceneName, 0, 0))
+                this.isShowTip = true
             }
         )
     }
@@ -185,5 +187,12 @@ export class MoldFormComponent implements OnInit {
      */
     setInputValue(value) {
         this.inputMold = new Mold(0, value, 0, 0)
+    }
+
+    /**
+     * 关闭提示框
+     */
+    onCloseTip(){
+        this.isShowTip = false
     }
 }

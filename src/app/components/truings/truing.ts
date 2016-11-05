@@ -7,10 +7,11 @@ export class Truing{
   constructor(
     public id: number,
     public imgIndex: number,
-    public imgName: string,
     public imgKey: string,
+    public imgName: string,
     public imgSize: number,
-    public scrawlImgKey: string,
+    public imgVersion: string,
+    public saveTime: string,
     public isSuccess: boolean
   ){
 

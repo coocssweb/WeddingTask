@@ -39,6 +39,14 @@ export class TruingComponent implements OnInit {
   //当前大图Index
   previewIndex: number
 
+  busTruingStatus: number = 0
+
+  tipInfo: any = {
+    title: '',
+    message: '',
+    on: false
+  }
+
   /**
    * 构造函数
    * @param checkService
@@ -51,6 +59,13 @@ export class TruingComponent implements OnInit {
    */
   ngOnInit(): void {
     this.getPhotos(3)
+    this.getStatus(3)
+  }
+
+  getStatus(photoInfoId){
+    this.truingService.getTruingStatus(photoInfoId).then((response:any)=>{
+      this.busTruingStatus = response.busTruingStatus
+    })
   }
 
   /**
@@ -98,7 +113,6 @@ export class TruingComponent implements OnInit {
     this.removePhoto = photo
   }
 
-
   /**
    * 确认事件
    */
@@ -124,7 +138,6 @@ export class TruingComponent implements OnInit {
     this.isShowConfirm = false
   }
 
-
   /**
    * 查看当前大图
    * @param index
@@ -137,7 +150,6 @@ export class TruingComponent implements OnInit {
   /**
    * 关闭当前大图
    */
-
   onClosePreview() {
     this.isPreview = false
   }
@@ -157,10 +169,29 @@ export class TruingComponent implements OnInit {
   uploadFileCb(response){
     //移除上传成功图片
     this.fileList.pop()
+
     //原片列表插入刚上传的图片信息
+    let index = -1
+    let imgVersion = response.imgVersion
+    let saveTime = response.saveTime
+    //查看当前图片是否存在列表中
+    for(let i = 0; i < this.photoList.length; i++){
+      let photoItem = this.photoList[i]
+      if(response.imgName === photoItem.imgName){
+        index = i
+        imgVersion = photoItem.imgVersion
+        saveTime = photoItem.saveTime
+        break
+      }
+    }
+
+    if(index > -1){
+      this.photoList.splice(index, 1)
+    }
+
     this.photoList.unshift(
-      new Truing(response.id, response.imgIndex, response.imgName, response.imgKey,
-        response.imgSize, '1', true)
+      new Truing(response.id, response.imgIndex, response.imgKey, response.imgName,
+        response.imgSize, imgVersion, saveTime, true)
     )
   }
 
@@ -180,4 +211,42 @@ export class TruingComponent implements OnInit {
     })
   }
 
+  /**
+   * 完成确认完成
+   */
+  onFinish(){
+    this.truingService.finish(3).then((response)=>{
+      this.busTruingStatus = response.busTruingStatus
+      this.tipInfo = {
+        title: '确认上传成功',
+        message: '精修片，确认上传成功...',
+        on: true
+      }
+    })
+  }
+
+  /**
+   * 重新确认
+   */
+  onRedo(){
+    this.truingService.redo(3).then((response)=>{
+      this.busTruingStatus = response.busTruingStatus
+      this.tipInfo = {
+        title: '重新确认成功',
+        message: '精修片，重新确认成功，请上传...',
+        on: true
+      }
+    })
+  }
+
+  /**
+   * 关闭提示信息
+   */
+  closeTip(){
+    this.tipInfo = {
+      title: '',
+      message: '',
+      on: false
+    }
+  }
 }

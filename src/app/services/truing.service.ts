@@ -10,6 +10,14 @@ export class TruingService extends BaseService {
   }
 
   /**
+   * 获取精修片状态
+   * @param photoInfoId
+   */
+  getTruingStatus(photoInfoId): Promise<any>{
+    return this.get('/photoInfos/'+photoInfoId+'/actions/truingConfirmStatus')
+  }
+
+  /**
    * 获取图片列表
    * @returns
    */
@@ -21,7 +29,6 @@ export class TruingService extends BaseService {
     }
 
     return this.get(url)
-
   }
 
   /**
@@ -30,7 +37,6 @@ export class TruingService extends BaseService {
    * @returns
    */
   save(photoInfoId, params): Promise<Truing> {
-
     let body = JSON.stringify(params)
     return this.post('/photoInfos/'+photoInfoId+'/photoTruings', body)
   }
@@ -42,5 +48,22 @@ export class TruingService extends BaseService {
    */
   remove(photoInfoId, imgName) {
     return this.delete('/photoInfos/'+photoInfoId+'/photoTruings?imgName='+encodeURI(imgName)+'&type=all', null)
+  }
+
+  /**
+   * 确认上传完成
+   * @param photoInfoId
+   * @returns {Promise<any>}
+   */
+  finish(photoInfoId){
+    return this.put('/photoInfos/'+photoInfoId+'/actions/finishUploadTruing')
+  }
+
+  /**
+   * 重新确认精修片
+   * @param photoInfoId
+   */
+  redo(photoInfoId){
+    return this.put('/photoInfos/'+photoInfoId+'/actions/redoConfirmTruing')
   }
 }
