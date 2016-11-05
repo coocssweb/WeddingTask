@@ -1,6 +1,6 @@
 <div class="upload-box" id="container">
   <a href="javascript:;" class="btn btn-primary" (click)="onClick()">
-    <span class="glyphicon glyphicon-cloud-upload"></span> 上传原片
+    <span class="glyphicon glyphicon-cloud-upload"></span> {{btnText}}
   </a>
   <div class="upload-label">{{title}}</div>
   <input type="file" multiple class="file-input" id="file-upload" (change)="onFileChange($event)" />

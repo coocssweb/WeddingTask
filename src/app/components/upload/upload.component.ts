@@ -27,6 +27,8 @@ export class UploadComponent implements OnInit {
 
   @Input() title: String
 
+  @Input() btnText: String
+
   @Input() requireMold: boolean = false
 
 

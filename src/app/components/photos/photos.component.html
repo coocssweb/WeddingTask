@@ -7,6 +7,7 @@
     <upload
             [mold]="currentMold"
             [title]="'你可以将原片拖拽到这里上传'"
+            [btnText]="'上传原片'"
             [requireMold]="true"
             (setFileListCb)="setFileListCb($event)"
             (uploadFileCb)="uploadFileCb($event)"
@@ -104,7 +105,7 @@
     <div class="none-data" [hidden]="photoList.length!=0||fileList.length!=0 || isLoadingData"></div>
 </div>
 <confirm
-        [hidden]="!isShowConfirm"
+        *ngIf="isShowConfirm"
         [title]="'确认删除?'"
         (confirm)="onConfirm($event)"
         (cancel)="onCancel($event)"
