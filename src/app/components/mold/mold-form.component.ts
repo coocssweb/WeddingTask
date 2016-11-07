@@ -5,14 +5,13 @@
 import {Component, OnInit, Output, EventEmitter} from '@angular/core';
 import {Mold} from './mold'
 import {MoldService} from '../../services/mold.service'
-import {PhotoService} from '../../services/photos.service'
 import StringUtils from '../../utils/stringUtils'
 
 @Component({
     selector: '<mold-form></mold-form>',
     templateUrl: 'mold-form.component.html',
     styleUrls: ['./mold-form.component.css'],
-    providers: [MoldService, PhotoService]
+    providers: [MoldService]
 })
 export class MoldFormComponent implements OnInit {
 
@@ -21,6 +20,9 @@ export class MoldFormComponent implements OnInit {
 
     //删除场景回调
     @Output() onDeleteMoldCb = new EventEmitter()
+
+    //完成提交
+    @Output() finishCb = new EventEmitter()
 
     //场景状态
     moldStatus = 0
@@ -31,7 +33,7 @@ export class MoldFormComponent implements OnInit {
     moldOptions: Mold[]
 
     //项目列表
-    moldList: Mold[]
+    moldList: Mold[] = []
 
     //当前选择项
     selectedMold = {
@@ -58,7 +60,7 @@ export class MoldFormComponent implements OnInit {
      * 构造函数
      * @param moldService
      */
-    constructor(private moldService: MoldService, private photoService: PhotoService) {
+    constructor(private moldService: MoldService) {
     }
 
     /**
@@ -66,6 +68,7 @@ export class MoldFormComponent implements OnInit {
      */
     ngOnInit(): void {
         this.photoInfoId = StringUtils.getUrlQuery("photoinfoid")
+        this.getRawInfo()
         this.getMolds()
         this.getOptions()
     }
@@ -78,6 +81,14 @@ export class MoldFormComponent implements OnInit {
             .then((molds: any) => {
                 this.moldOptions = molds
             })
+    }
+
+    getRawInfo(){
+        this.moldService.getRawInfo(this.photoInfoId)
+          .then((result: any) => {
+              //设置场景状态
+              this.moldStatus = result&&result.busRawStatus ? result.busRawStatus : 0
+          })
     }
 
     /**
@@ -97,8 +108,6 @@ export class MoldFormComponent implements OnInit {
                 let totalMold = new Mold(0, '全部', totalRaw, totalChecked)
                 this.moldList = molds.photoSceneCounts
                 this.moldList = [totalMold].concat(this.moldList)
-                //设置状态
-                this.moldStatus = molds.busRawStatus
             })
     }
 
@@ -123,9 +132,7 @@ export class MoldFormComponent implements OnInit {
      * 原片上传结束
      */
     onFinish() {
-        this.photoService.finish(this.photoInfoId).then((response: any)=> {
-            this.moldStatus = response.busRawStatus
-        })
+        this.finishCb.emit()
     }
 
     //切换选择项

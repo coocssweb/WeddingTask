@@ -2,6 +2,7 @@
     <mold-form
             (onTabMoldCb)="onTabMoldCb($event)"
             (onDeleteMoldCb)="onDeleteMoldCb($event)"
+            (finishCb)="onFinish($event)"
     >
     </mold-form>
     <upload
@@ -104,7 +105,7 @@
             </div>
         </div>
     </div>
-    <div class="none-data" [hidden]="photoList.length!=0||fileList.length!=0 || isLoadingData"></div>
+    <div class="none-data" [hidden]="photoList.length!=0||fileList.length!=0 || isLoadingData">没有找到任何数据</div>
 </div>
 <confirm
         *ngIf="isShowConfirm"

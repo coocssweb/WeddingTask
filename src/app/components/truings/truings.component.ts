@@ -68,7 +68,7 @@ export class TruingComponent implements OnInit {
 
   getStatus(photoInfoId){
     this.truingService.getTruingStatus(photoInfoId).then((response:any)=>{
-      this.busTruingStatus = response.busTruingStatus
+      this.busTruingStatus = response&&response.busTruingStatus ? response.busTruingStatus : 0
     })
   }
 
@@ -83,8 +83,9 @@ export class TruingComponent implements OnInit {
     this.truingService.getTruings(photoInfoId, this.sort.key, this.sort.order).then((photos: any) => {
       this.isLoadingData = false
 
-      //设置返回数据
-      this.photoList = photos
+      if(photos && photos.length)
+        //设置返回数据
+        this.photoList = photos
     })
   }
 

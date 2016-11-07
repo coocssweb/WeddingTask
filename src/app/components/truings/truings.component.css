@@ -1,3 +1,6 @@
+.layout{
+  padding-bottom: 120px;
+}
 .toolbar{
   margin-top: 20px;
 }
@@ -36,7 +39,6 @@
 .photo-list{
   width: 1200px;
   margin-top: 20px;
-  padding-bottom: 120px;
 }
 
 .photo-item{

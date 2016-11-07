@@ -8,13 +8,13 @@
                 </a>
             </li>
 
-            <li class="mold-item setting-item" [hidden]="moldStatus===1">
+            <li class="mold-item setting-item" [hidden]="moldStatus===1 || moldList.length===1">
                 <button type="button" class="btn btn-default" (click)="onToggleSetting()">
                     <span class="glyphicon glyphicon-cog"></span>
                 </button>
             </li>
 
-            <li class="mold-item" [hidden]="!isSetting">
+            <li class="mold-item" [hidden]="(!isSetting && moldList.length>1) || moldStatus === 1 ">
                 <button type="button" class="btn btn-default" (click)="onShowForm(true)">
                     <span class="glyphicon glyphicon-plus"></span>
                 </button>
@@ -29,7 +29,7 @@
 
 
 <confirm
-    *ngIf="isShowConfirm"
+    *ngIf="isShowDeleteConfirm"
     [title] ="'确认删除?'"
     (confirm)="onConfirmDelete($event)"
     (cancel)="onCancelDelete($event)">

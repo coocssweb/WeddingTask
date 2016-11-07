@@ -236,4 +236,13 @@ export class PhotosComponent implements OnInit, AfterViewInit {
         })
       }
 
+    onFinish(){
+
+
+
+      this.photoService.finish(this.photoInfoId).then((response: any)=> {
+        this.moldFormComponent.getRawInfo()
+      })
+    }
+
 }

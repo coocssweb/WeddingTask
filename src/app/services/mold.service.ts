@@ -14,6 +14,15 @@ export class MoldService extends BaseService {
     }
 
     /**
+     * 获取照片信息状态
+     * @param photoInfoId
+     * @returns {Promise<any>}
+     */
+    getRawInfo(photoInfoId){
+      return this.get('/photoInfos/'+photoInfoId+'/actions/rawInfo')
+    }
+
+    /**
      * 获取原片场景列表
      * @returns {Promise<never|T>|Promise<never>|Observable<R>|Promise<R>|any}
      */

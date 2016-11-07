@@ -17,7 +17,12 @@ export class BaseService{
 
         return this.http.get(DOMAIN + url, {headers: headers})
             .toPromise()
-            .then((res: Response)=> {
+            .then((res: any)=> {
+
+                if(!res._body){
+                  return {}
+                }
+
                 let body = res.json()
                 return body || {}
             })
