@@ -47,7 +47,7 @@ export class TruingService extends BaseService {
    * @returns
    */
   remove(photoInfoId, imgName) {
-    return this.delete('/photoInfos/'+photoInfoId+'/photoTruings?imgName='+encodeURI(imgName)+'&type=all', null)
+    return this.delete('/photoInfos/'+photoInfoId+'/photoTruings?imgName='+encodeURI(imgName)+'&type=last', null)
   }
 
   /**
