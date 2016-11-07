@@ -2,8 +2,8 @@
  *
  * @description :: 大图查看器
  */
-import {Component, Input, Output, EventEmitter, OnInit, OnDestroy} from '@angular/core';
-
+import {Component, Input, Output, EventEmitter, OnInit, OnDestroy} from "@angular/core";
+import {QINIU_DOMAIN} from "../../constant/config";
 
 @Component({
   selector: '<viewer></viewer>',
@@ -23,6 +23,8 @@ export class ViewerComponent implements OnInit, OnDestroy{
    * @type {EventEmitter}
    */
   @Output() close = new EventEmitter()
+
+  qiniuDomain: any = QINIU_DOMAIN
 
   /**
    * 初始化事件

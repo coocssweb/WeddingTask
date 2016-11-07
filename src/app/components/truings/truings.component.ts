@@ -1,7 +1,8 @@
-import {Component, OnInit, AfterViewInit, ViewChild} from '@angular/core'
-import {Truing} from './truing'
-import {TruingService} from '../../services/truing.service'
-import StringUtils from '../../utils/stringUtils'
+import {Component, OnInit} from "@angular/core";
+import {Truing} from "./truing";
+import {TruingService} from "../../services/truing.service";
+import StringUtils from "../../utils/stringUtils";
+import {QINIU_DOMAIN} from "../../constant/config";
 
 @Component({
   selector: 'truing',
@@ -11,7 +12,7 @@ import StringUtils from '../../utils/stringUtils'
 })
 export class TruingComponent implements OnInit {
 
-
+  qiniuDomain: any = QINIU_DOMAIN
 
   //排序项
   sort = {

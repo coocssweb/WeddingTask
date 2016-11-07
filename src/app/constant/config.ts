@@ -4,3 +4,9 @@ function getDomain(domain: any){
 }
 
 export const DOMAIN = getDomain(window)
+
+function getQiniuDomain(domain: any){
+  return domain.config.qiniuDomain
+}
+
+export const QINIU_DOMAIN = getQiniuDomain(window)

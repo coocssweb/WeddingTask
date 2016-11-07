@@ -1,10 +1,10 @@
-import {Component, Input, Output, EventEmitter, OnInit} from '@angular/core';
-import {UploadService} from '../../services/upload.service'
-import {CustomerService} from '../../services/customer.service'
-import {Customer} from '../../components/customer/customer'
-import StringUtils from '../../utils/stringUtils'
-import {Mold} from '../../components/mold/mold'
-import EXIF from 'exif-js'
+import {Component, Input, Output, EventEmitter, OnInit} from "@angular/core";
+import {UploadService} from "../../services/upload.service";
+import {CustomerService} from "../../services/customer.service";
+import {Customer} from "../../components/customer/customer";
+import StringUtils from "../../utils/stringUtils";
+import {Mold} from "../../components/mold/mold";
+import EXIF from "exif-js";
 
 @Component({
   selector: 'upload',
@@ -24,38 +24,38 @@ export class UploadComponent implements OnInit {
   //保存图片信息回调
   @Output() saveCb = new EventEmitter()
 
-  @Input() mold:Mold
+  @Input() mold: Mold
 
-  @Input() title:String
+  @Input() title: String
 
-  @Input() btnText:String
+  @Input() btnText: String
 
-  @Input() requireMold:boolean = false
+  @Input() requireMold: boolean = false
 
-  @Input() fileInputId:String
+  @Input() fileInputId: String
 
   //是否显示tip信息
-  isTip:boolean = false
+  isTip: boolean = false
 
   //当前客户信息
-  customer:Customer
+  customer: Customer
   //token
-  token:any = []
+  token: any = []
   //上传列表
-  fileList:any [] = []
+  fileList: any [] = []
   //是否正在上传
-  isFetchingToken:boolean = false
+  isFetchingToken: boolean = false
 
-  private photoInfoId:string
+  private photoInfoId: string
 
-  constructor(private uploadService:UploadService, private customerService:CustomerService) {
+  constructor(private uploadService: UploadService, private customerService: CustomerService) {
 
   }
 
   /**
    * 初始化事件
    */
-  ngOnInit():void {
+  ngOnInit(): void {
     this.photoInfoId = StringUtils.getUrlQuery("photoinfoid")
     this.getCustomer()
   }
@@ -78,8 +78,8 @@ export class UploadComponent implements OnInit {
   /**
    * 获取用户信息
    */
-  getCustomer():void {
-    this.customerService.getCustomerByPhotoInfo(this.photoInfoId).then((response:any)=> {
+  getCustomer(): void {
+    this.customerService.getCustomerByPhotoInfo(this.photoInfoId).then((response: any)=> {
       this.customer = new Customer(response.id, response.name, response.groupId, response.headImage)
     })
   }
@@ -128,7 +128,7 @@ export class UploadComponent implements OnInit {
           imgShootTime: file.imgShootTime,
           imgSize: file.imgSize,
           photoSceneId: _this.mold ? _this.mold.id : 0,
-          done: (response:any)=> {
+          done: (response: any)=> {
             //回调上传成功方法
             _this.uploadFileCb.emit(response)
             if (_this.fileList.length) {
@@ -152,20 +152,20 @@ export class UploadComponent implements OnInit {
   }
 
   //文件输入框变化事件
-  onFileChange(event:any) {
+  onFileChange(event: any) {
     let files = (<HTMLInputElement>document.getElementById("" + this.fileInputId)).files
 
 
     let fileList = []
 
     for (let i = 0; i < files.length; i++) {
-      let file:any = files[i]
+      let file: any = files[i]
       //倒叙插入等待上传的原片
       let imgShootTime = StringUtils.stampToString(file.lastModified)
 
       let _this = this
       EXIF.getData(file, function () {
-        let data:any = EXIF.getAllTags(this)
+        let data: any = EXIF.getAllTags(this)
         if (data && data.DateTimeDigitized) {
           imgShootTime = StringUtils.stampToString(data.DateTimeDigitized)
         }
@@ -194,9 +194,9 @@ export class UploadComponent implements OnInit {
   /**
    * 获取七牛Token
    */
-  getToken(fileList):void {
+  getToken(fileList): void {
 
-    if(this.isFetchingToken){
+    if (this.isFetchingToken) {
       alert('正在获取token,请等待...')
     }
 
@@ -204,7 +204,7 @@ export class UploadComponent implements OnInit {
     let _this = this
     //批量获取token
     this.uploadService.getToken(this.customer.id, fileList.length)
-      .then((token:any) => {
+      .then((token: any) => {
         _this.isFetchingToken = false
         _this.token = token.concat(_this.token)
         _this.fileList = fileList.concat(_this.fileList)
