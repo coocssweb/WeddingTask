@@ -10,6 +10,7 @@
             [title]="'你可以将原片拖拽到这里上传'"
             [btnText]="'上传原片'"
             [fileInputId]="'rawFileUpload'"
+            [fileListId]="'photo-list-'"
             [requireMold]="true"
             (setFileListCb)="setFileListCb($event)"
             (uploadFileCb)="uploadFileCb($event)"
@@ -71,7 +72,7 @@
 
                     <div [hidden]="!photo.isUploading" class="uploading-box">
                         <span class="glyphicon glyphicon-refresh w_loading"></span>
-                        <span>上传中...</span>
+                        <span>上传中（<span id="photo-list-{{i}}">0%</span>）...</span>
                     </div>
 
                 </div>
@@ -96,8 +97,10 @@
                         </div>
                     </div>
 
-                    <img src="{{qiniuDomain}}/{{photo.imgKey}}-300"
+                    <img  src="{{photo.imgKey}}"
+                         (error)="onLoadImage(photo.id,photo.imgKey, photo.isLoadingPreview)"
                          class="photo-image"/>
+                  <div *ngIf="photo.isLoadingPreview" class="loading-img"><img src="../../../loading.gif"/> </div>
                 </div>
                 <div class="photo-info"><span class="photo-name">原片##{{photo.imgIndex}}</span><span class="photo-size">{{photo.imgSize}}M</span>
                 </div>

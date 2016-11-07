@@ -84,9 +84,14 @@ export class TruingComponent implements OnInit {
     this.truingService.getTruings(photoInfoId, this.sort.key, this.sort.order).then((photos: any) => {
       this.isLoadingData = false
 
-      if(photos && photos.length)
-        //设置返回数据
+      if(photos && photos.length){
+  
         this.photoList = photos
+        this.photoList.map((item,index)=>{
+          this.photoList[index].imgKey = this.qiniuDomain+'/'+ item.imgKey+ '-300'
+        }, this)
+      }
+        //设置返回数据
     })
   }
 
@@ -180,11 +185,13 @@ export class TruingComponent implements OnInit {
     let index = -1
     let imgVersion = response.imgVersion
     let saveTime = response.saveTime
+    let id = response.id
     //查看当前图片是否存在列表中
     for(let i = 0; i < this.photoList.length; i++){
       let photoItem = this.photoList[i]
       if(response.imgName === photoItem.imgName){
         index = i
+        id = photoItem.id
         imgVersion = photoItem.imgVersion
         saveTime = photoItem.saveTime
         break
@@ -196,7 +203,7 @@ export class TruingComponent implements OnInit {
     }
 
     this.photoList.unshift(
-      new Truing(response.id, response.imgIndex, response.imgKey, response.imgName,
+      new Truing(id, response.imgIndex, this.qiniuDomain+"/"+ response.imgKey+ '-300', response.imgName,
         response.imgSize, imgVersion, saveTime, true)
     )
   }
@@ -254,5 +261,57 @@ export class TruingComponent implements OnInit {
       message: '',
       on: false
     }
+  }
+  
+  setPhotoListByID(id,  isLoadingPreview){
+    for(let i=0; i< this.photoList.length; i++){
+      if(this.photoList[i].id == id){
+        this.photoList[i].isLoadingPreview = isLoadingPreview
+        
+        if(isLoadingPreview){
+          if(this.photoList[i].imgKey!=''){
+            this.photoList[i].tempKey = this.photoList[i].imgKey
+            this.photoList[i].imgKey = ''
+          }
+        }else{
+          this.photoList[i].imgKey = this.photoList[i].tempKey
+        }
+        
+        break
+      }
+    }
+  }
+  
+  onLoadImage(id,src,isLoadingPreview){
+    if(!isLoadingPreview){
+      this.setPhotoListByID(id, true)
+      this.loadImage(id, src)
+    }
+  }
+  
+  loadImage(id, src){
+    let xhr = new XMLHttpRequest()
+    xhr.open('get', src, true)
+    xhr.send()
+    let _this = this
+ 
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState == 4) {
+        let result = { error: ''}
+        try{
+          result = JSON.parse(xhr.response)
+        }catch(e){
+          
+        }
+        if(result.error){
+          setTimeout(function () {
+            _this.loadImage(id, src)
+          },2000)
+        }else{
+          _this.setPhotoListByID(id,false)
+        }
+      }
+    }
+  
   }
 }

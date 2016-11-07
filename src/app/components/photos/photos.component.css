@@ -224,3 +224,13 @@
     transform:rotate(360deg);
   }
 }
+
+.loading-img{
+  position: absolute;
+  top: 0px;
+  background-color: #fff;
+  height: 120px;
+  line-height: 120px;
+  width: 100%;
+  text-align: center;
+}

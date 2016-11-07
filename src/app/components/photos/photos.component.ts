@@ -85,6 +85,11 @@ export class PhotosComponent implements OnInit, AfterViewInit {
 
       //设置返回数据
       this.photoList = photos.results ? photos.results : []
+  
+      this.photoList.map((item,index)=>{
+        this.photoList[index].imgKey = this.qiniuDomain+'/'+ item.imgKey+ '-300'
+      }, this)
+      
     })
   }
 
@@ -213,7 +218,7 @@ export class PhotosComponent implements OnInit, AfterViewInit {
     this.fileList.pop()
     //原片列表插入刚上传的图片信息
     this.photoList.unshift(
-      new Photo(response.id, response.imgIndex, response.imgName, response.imgKey,
+      new Photo(response.id, response.imgIndex, response.imgName, this.qiniuDomain+"/"+ response.imgKey+ '-300',
         response.imgSize, response.imgShootTime,
         response.remark, true)
     )
@@ -231,7 +236,7 @@ export class PhotosComponent implements OnInit, AfterViewInit {
   savePhoto(params) {
     let requestParams = {
       imgKey: params.imgKey,
-      imgName: params.imageName,
+      imgName: params.imgName,
       imgShootTime: params.imgShootTime,
       imgSize: params.imgSize,
       photoSceneId: params.photoSceneId
@@ -247,6 +252,60 @@ export class PhotosComponent implements OnInit, AfterViewInit {
     this.photoService.finish(this.photoInfoId).then((response: any)=> {
       this.moldFormComponent.getRawInfo()
     })
+  }
+  
+  
+  
+  setPhotoListByID(id,  isLoadingPreview){
+    for(let i=0; i< this.photoList.length; i++){
+      if(this.photoList[i].id == id){
+        this.photoList[i].isLoadingPreview = isLoadingPreview
+        
+        if(isLoadingPreview){
+          if(this.photoList[i].imgKey!=''){
+            this.photoList[i].tempKey = this.photoList[i].imgKey
+            this.photoList[i].imgKey = ''
+          }
+        }else{
+          this.photoList[i].imgKey = this.photoList[i].tempKey
+        }
+        
+        break
+      }
+    }
+  }
+  
+  onLoadImage(id,src,isLoadingPreview){
+    if(!isLoadingPreview){
+      this.setPhotoListByID(id, true)
+      this.loadImage(id, src)
+    }
+  }
+  
+  loadImage(id, src){
+    let xhr = new XMLHttpRequest()
+    xhr.open('get', src, true)
+    xhr.send()
+    let _this = this
+    
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState == 4) {
+        let result = { error: ''}
+        try{
+          result = JSON.parse(xhr.response)
+        }catch(e){
+          
+        }
+        if(result.error){
+          setTimeout(function () {
+            _this.loadImage(id, src)
+          },2000)
+        }else{
+          _this.setPhotoListByID(id,false)
+        }
+      }
+    }
+    
   }
 
 }

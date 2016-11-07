@@ -43,3 +43,13 @@ ul, li {
   color: #fe6e0f;
   font-size: 18px;
 }
+
+.loading-img{
+  position: absolute;
+  top: 0px;
+  background-color: #fff;
+  height: 120px;
+  line-height: 120px;
+  width: 100%;
+  text-align: center;
+}
