@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core'
-import {Http} from '@angular/http'
-import {BaseService} from './base.service'
-import {Truing} from '../components/truings/truing'
+import {Injectable} from "@angular/core";
+import {Http} from "@angular/http";
+import {BaseService} from "./base.service";
+import {Truing} from "../components/truings/truing";
 
 @Injectable()
 export class TruingService extends BaseService {
@@ -14,7 +14,7 @@ export class TruingService extends BaseService {
    * @param photoInfoId
    */
   getTruingStatus(photoInfoId): Promise<any>{
-    return this.get('/photoInfos/'+photoInfoId+'/actions/truingConfirmStatus')
+    return this.get('/photoInfos/'+photoInfoId+'/actions/truingInfo')
   }
 
   /**
