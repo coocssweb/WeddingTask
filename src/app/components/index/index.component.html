@@ -4,6 +4,7 @@
              (click)="onTab('checked', photosComponent.moldFormComponent.moldStatus==1)">客户选片完成</tabItem>
     <tabItem [isActive]="currentTab=='truing'" [disabled]="false" (click)="onTab('truing', true)">精修片上传</tabItem>
 </tabs>
-<photos [hidden]="currentTab!='raw'"></photos>
+<photos [hidden]="currentTab!='raw'" ></photos>
 <checked [hidden]="currentTab!='checked'"></checked>
+
 <truing [hidden]="currentTab!='truing'"></truing>

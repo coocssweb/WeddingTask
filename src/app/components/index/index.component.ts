@@ -3,7 +3,6 @@
  * @description :: 入口页面
  */
 import { Component, ViewChild } from '@angular/core';
-
 import {PhotosComponent} from '../photos/photos.component'
 
 @Component({
@@ -15,9 +14,7 @@ export class IndexComponent{
     @ViewChild(PhotosComponent)
     private photosComponent: PhotosComponent
 
-
-    currentTab: string = 'truing'
-
+    currentTab: string = 'raw'
 
     onTab(tab, flag){
         if(!flag){

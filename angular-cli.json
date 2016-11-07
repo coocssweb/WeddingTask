@@ -18,7 +18,9 @@
         "../node_modules/bootstrap/dist/css/bootstrap.css",
         "styles.css"
       ],
-      "scripts": [],
+      "scripts": [
+
+      ],
       "environments": {
         "source": "environments/environment.ts",
         "dev": "environments/environment.ts",

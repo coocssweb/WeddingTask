@@ -13,8 +13,8 @@ export class PhotoService extends BaseService {
      * 获取图片列表
      * @returns
      */
-    getPhotos(sceneId, sortBy, sortOrder): Promise<Photo[]> {
-        let url = '/photoInfos/3/photoRaws?pageNo=1&pageSize=-1'
+    getPhotos(photoInfoId, sceneId, sortBy, sortOrder): Promise<Photo[]> {
+        let url = '/photoInfos/'+photoInfoId+'/photoRaws?pageNo=1&pageSize=-1'
 
         if (sceneId) {
             url += '&_filter_eq_photoSceneId=' + sceneId
@@ -34,10 +34,10 @@ export class PhotoService extends BaseService {
      * @param params
      * @returns
      */
-    save(params): Promise<Photo> {
+    save(photoInfoId, params): Promise<Photo> {
 
         let body = JSON.stringify(params)
-        return this.post('/photoInfos/3/photoRaws', body)
+        return this.post('/photoInfos/'+photoInfoId+'/photoRaws', body)
     }
 
     /**
@@ -45,8 +45,8 @@ export class PhotoService extends BaseService {
      * @param ids
      * @returns
      */
-    remove(ids) {
-        return this.delete('/photoInfos/3/photoRaws/', ids)
+    remove(photoInfoId, ids) {
+        return this.delete('/photoInfos/'+photoInfoId+'/photoRaws/', ids)
     }
 
     /**
@@ -55,6 +55,6 @@ export class PhotoService extends BaseService {
      * @returns {Promise<any>}
      */
     finish(photoInfoId): Promise<any> {
-        return this.put('/photoInfos/3/actions/finishUploadRaw')
+        return this.put('/photoInfos/'+photoInfoId+'/actions/finishUploadRaw')
     }
 }

@@ -8,9 +8,11 @@
             [mold]="currentMold"
             [title]="'你可以将原片拖拽到这里上传'"
             [btnText]="'上传原片'"
+            [fileInputId]="'rawFileUpload'"
             [requireMold]="true"
             (setFileListCb)="setFileListCb($event)"
             (uploadFileCb)="uploadFileCb($event)"
+            (saveCb)="savePhoto($event)"
             *ngIf="moldFormComponent.moldStatus===0"
     >
     </upload>
@@ -93,7 +95,7 @@
                         </div>
                     </div>
 
-                    <img src="http://oex701atk.bkt.clouddn.com/{{photo.imgKey}}?imageView2/2/w/500"
+                    <img src="http://oex701atk.bkt.clouddn.com/{{photo.imgKey}}-300"
                          class="photo-image"/>
                 </div>
                 <div class="photo-info"><span class="photo-name">原片##{{photo.imgIndex}}</span><span class="photo-size">{{photo.imgSize}}M</span>

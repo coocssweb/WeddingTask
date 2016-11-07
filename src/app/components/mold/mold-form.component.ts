@@ -6,6 +6,7 @@ import {Component, OnInit, Output, EventEmitter} from '@angular/core';
 import {Mold} from './mold'
 import {MoldService} from '../../services/mold.service'
 import {PhotoService} from '../../services/photos.service'
+import StringUtils from '../../utils/stringUtils'
 
 @Component({
     selector: '<mold-form></mold-form>',
@@ -50,6 +51,9 @@ export class MoldFormComponent implements OnInit {
     removeMold: Mold
 
     isShowTip: boolean = false
+
+    private photoInfoId: string
+
     /**
      * 构造函数
      * @param moldService
@@ -61,6 +65,7 @@ export class MoldFormComponent implements OnInit {
      * 初始化事件
      */
     ngOnInit(): void {
+        this.photoInfoId = StringUtils.getUrlQuery("photoinfoid")
         this.getMolds()
         this.getOptions()
     }
@@ -79,7 +84,7 @@ export class MoldFormComponent implements OnInit {
      * 获取场景
      */
     getMolds(): void {
-        this.moldService.getMolds()
+        this.moldService.getMolds(this.photoInfoId)
             .then((molds: any) => {
                 let totalRaw = 0
                 let totalChecked = 0
@@ -104,7 +109,7 @@ export class MoldFormComponent implements OnInit {
             return
         }
 
-        this.moldService.addMold(this.inputMold.sceneName).then(
+        this.moldService.addMold(this.photoInfoId, this.inputMold.sceneName).then(
             (response: any)=> {
                 this.inputMold = new Mold(0, '', 0, 0)
                 this.isShowForm = false
@@ -118,7 +123,7 @@ export class MoldFormComponent implements OnInit {
      * 原片上传结束
      */
     onFinish() {
-        this.photoService.finish(3).then((response: any)=> {
+        this.photoService.finish(this.photoInfoId).then((response: any)=> {
             this.moldStatus = response.busRawStatus
         })
     }
@@ -149,7 +154,7 @@ export class MoldFormComponent implements OnInit {
 
     onConfirmDelete() {
         //从列表中移除要删除的图片
-        this.moldService.deleteMold(this.removeMold.id.toString()).then((response: any)=> {
+        this.moldService.deleteMold(this.photoInfoId, this.removeMold.id.toString()).then((response: any)=> {
             if (response.errCode) {
                 alert(response.msg)
             } else {

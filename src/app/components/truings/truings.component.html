@@ -3,6 +3,7 @@
     *ngIf="busTruingStatus == 0"
     [title]="'请选择精修片，进行上传'"
     [btnText]="'上传精修片'"
+    [fileInputId]="'truingFileUpload'"
     (setFileListCb)="setFileListCb($event)"
     (uploadFileCb)="uploadFileCb($event)"
     (saveCb)="saveTruing($event)"
@@ -77,7 +78,7 @@
             </div>
           </div>
 
-          <img src="http://oex701atk.bkt.clouddn.com/{{photo.imgKey}}?imageView2/2/w/500"
+          <img src="http://oex701atk.bkt.clouddn.com/{{photo.imgKey}}-300"
                class="photo-image"/>
           <span class="photo-name">{{photo.imgName}}</span>
         </div>

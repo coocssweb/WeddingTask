@@ -4,6 +4,7 @@ import {CustomerService} from '../../services/customer.service'
 import {Customer} from '../../components/customer/customer'
 import StringUtils from '../../utils/stringUtils'
 import {Mold} from '../../components/mold/mold'
+import EXIF from 'exif-js'
 
 @Component({
   selector: 'upload',
@@ -31,6 +32,7 @@ export class UploadComponent implements OnInit {
 
   @Input() requireMold: boolean = false
 
+  @Input() fileInputId: String
 
   //是否显示tip信息
   isTip: boolean = false
@@ -44,6 +46,8 @@ export class UploadComponent implements OnInit {
   //是否正在上传
   isUploading: boolean = false
 
+  private photoInfoId: string
+
   constructor(private uploadService: UploadService, private customerService: CustomerService) {
 
   }
@@ -52,6 +56,7 @@ export class UploadComponent implements OnInit {
    * 初始化事件
    */
   ngOnInit(): void {
+    this.photoInfoId = StringUtils.getUrlQuery("photoinfoid")
     this.getCustomer()
   }
 
@@ -63,7 +68,7 @@ export class UploadComponent implements OnInit {
       return
     }
 
-    document.getElementById('file-upload').click()
+    document.getElementById(""+this.fileInputId).click()
   }
 
   onConfirm() {
@@ -92,7 +97,7 @@ export class UploadComponent implements OnInit {
    * 获取用户信息
    */
   getCustomer(): void {
-    this.customerService.getCustomerByPhotoInfo(3).then((response: any)=> {
+    this.customerService.getCustomerByPhotoInfo(this.photoInfoId).then((response: any)=> {
       this.customer = new Customer(response.id, response.name, response.groupId, response.headImage)
     })
   }
@@ -168,28 +173,40 @@ export class UploadComponent implements OnInit {
 
   //文件输入框变化事件
   onFileChange(event: any) {
-    let files = (<HTMLInputElement>document.getElementById('file-upload')).files
+    let files = (<HTMLInputElement>document.getElementById(""+this.fileInputId)).files
 
 
     for (let i = 0; i < files.length; i++) {
       let file: any = files[i]
       //倒叙插入等待上传的原片
-      this.fileList.unshift({
-        id: 0,
-        imgKey: '',
-        imgName: file.name,
-        imgSize: (file.size / (1024 * 1024)).toFixed(2),
-        imgShootTime: StringUtils.stampToString(file.lastModified),
-        file: file,
-        remark: '',
-        isUploading: false,
-        isSuccess: false,
-        isWaiting: true
-      })
-    }
+      let imgShootTime =StringUtils.stampToString(file.lastModified)
 
-    this.getToken(files.length)
-    this.setFileListCb.emit(this.fileList)
+      let _this = this
+      EXIF.getData(file, function(){
+        let data:any = EXIF.getAllTags(this)
+        if(data && data.DateTimeDigitized) {
+          imgShootTime = StringUtils.stampToString(data.DateTimeDigitized)
+        }
+        _this.fileList.unshift({
+          id: 0,
+          imgKey: '',
+          imgName: file.name,
+          imgSize: (file.size / (1024 * 1024)).toFixed(2),
+          imgShootTime: imgShootTime,
+          file: file,
+          remark: '',
+          isUploading: false,
+          isSuccess: false,
+          isWaiting: true
+        })
+
+        if(_this.fileList.length == files.length){
+          _this.setFileListCb.emit(_this.fileList)
+          _this.getToken(files.length)
+        }
+
+        })
+    }
   }
 
 }

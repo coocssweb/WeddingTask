@@ -3,7 +3,7 @@
     <span class="glyphicon glyphicon-cloud-upload"></span> {{btnText}}
   </a>
   <div class="upload-label">{{title}}</div>
-  <input type="file" multiple class="file-input" id="file-upload" (change)="onFileChange($event)" />
+  <input type="file" multiple class="file-input" id={{fileInputId}} (change)="onFileChange($event)" />
 </div>
 <tip [title]="'提示信息'"
      *ngIf="isTip"

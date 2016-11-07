@@ -1,5 +1,10 @@
 export default {
   stampToString(stamp) {
+
+    if((""+stamp).indexOf(':')){
+      return (""+stamp).replace(":",'-').replace(":",'-')
+    }
+
     let value = new Date(stamp)
     let year = value.getFullYear().toString()
     let month = (value.getMonth() + 1).toString()
@@ -29,5 +34,11 @@ export default {
     }
 
     return year + "-" + month + "-" + date + " " + hour + ":" + minute + ":" + second
+  },
+
+  getUrlQuery(name: string){
+    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+    var r = window.location.search.substr(1).match(reg);
+    if(r!=null) return r[2]; return null;
   }
 }

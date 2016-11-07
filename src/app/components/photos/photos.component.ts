@@ -3,6 +3,7 @@ import {Photo} from './photo'
 import {Mold} from '../mold/mold'
 import {PhotoService} from '../../services/photos.service'
 import {MoldFormComponent} from '../mold/mold-form.component'
+import StringUtils from '../../utils/stringUtils'
 
 @Component({
     selector: 'photos',
@@ -45,6 +46,7 @@ export class PhotosComponent implements OnInit, AfterViewInit {
     //当前大图Index
     previewIndex: number
 
+    private photoInfoId: string
     /**
      * 构造函数
      * @param photoService
@@ -56,8 +58,9 @@ export class PhotosComponent implements OnInit, AfterViewInit {
      * 初始化事件
      */
     ngOnInit(): void {
+        this.photoInfoId = StringUtils.getUrlQuery("photoinfoid")
         this.getPhotos(null)
-        
+
     }
 
     ngAfterViewInit(){
@@ -72,7 +75,7 @@ export class PhotosComponent implements OnInit, AfterViewInit {
         this.isLoadingData = true
 
         //请求加载图片列表
-        this.photoService.getPhotos(sceneId, this.sort.key, this.sort.order).then((photos: any) => {
+        this.photoService.getPhotos(this.photoInfoId, sceneId, this.sort.key, this.sort.order).then((photos: any) => {
             this.isLoadingData = false
 
             //设置返回数据
@@ -116,7 +119,7 @@ export class PhotosComponent implements OnInit, AfterViewInit {
     onConfirm() {
 
         //从列表中移除要删除的图片
-        this.photoService.remove(this.removePhoto.id.toString()).then((response)=> {
+        this.photoService.remove(this.photoInfoId, this.removePhoto.id.toString()).then((response)=> {
             for (let i = 0; i < this.photoList.length; i++) {
                 if (this.photoList[i].id === this.removePhoto.id) {
                     this.photoList.splice(i, 1)
@@ -228,7 +231,7 @@ export class PhotosComponent implements OnInit, AfterViewInit {
           imgSize: params.imgSize,
           photoSceneId: params.photoSceneId
         }
-        this.photoService.save(requestParams).then((response)=>{
+        this.photoService.save(this.photoInfoId, requestParams).then((response)=>{
           params.done(response)
         })
       }

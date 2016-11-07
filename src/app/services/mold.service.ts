@@ -17,8 +17,8 @@ export class MoldService extends BaseService {
      * 获取原片场景列表
      * @returns {Promise<never|T>|Promise<never>|Observable<R>|Promise<R>|any}
      */
-    getMolds(): Promise<Mold[]> {
-        return this.get('/photoInfos/3/photoScenes/actions/statistics')
+    getMolds(photoInfoId): Promise<Mold[]> {
+        return this.get('/photoInfos/'+photoInfoId+'/photoScenes/actions/statistics')
     }
 
     /**
@@ -26,9 +26,9 @@ export class MoldService extends BaseService {
      * @param sceneName
      * @returns {Promise<never|T>|Promise<never>|Observable<R>|Promise<R>|any}
      */
-    addMold(sceneName: string): Promise<Mold[]> {
+    addMold(photoInfoId, sceneName): Promise<Mold[]> {
         let body = JSON.stringify({sceneName})
-        return this.post('/photoInfos/3/photoScenes', body)
+        return this.post('/photoInfos/'+photoInfoId+'/photoScenes', body)
     }
 
     /**
@@ -36,8 +36,8 @@ export class MoldService extends BaseService {
      * @param ids
      * @returns {Promise<never|T>|Promise<never>|Observable<R>|Promise<R>|any}
      */
-    deleteMold(ids: string) : Promise<any>{
-        return this.delete('/photoInfos/3/photoScenes/', ids)
+    deleteMold(photoInfoId, ids) : Promise<any>{
+        return this.delete('/photoInfos/'+photoInfoId+'/photoScenes/', ids)
     }
 
 }

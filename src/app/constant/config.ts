@@ -1,1 +1,6 @@
-export const DOMAIN = 'http://b-test.idaoying.com'
+
+function getDomain(domain: any){
+  return domain.config.domain
+}
+
+export const DOMAIN = getDomain(window)

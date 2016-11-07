@@ -1,6 +1,7 @@
 import {Component, OnInit, AfterViewInit, ViewChild} from '@angular/core'
 import {Truing} from './truing'
 import {TruingService} from '../../services/truing.service'
+import StringUtils from '../../utils/stringUtils'
 
 @Component({
   selector: 'truing',
@@ -47,6 +48,8 @@ export class TruingComponent implements OnInit {
     on: false
   }
 
+  private photoInfoId: string
+
   /**
    * 构造函数
    * @param checkService
@@ -58,8 +61,9 @@ export class TruingComponent implements OnInit {
    * 初始化事件
    */
   ngOnInit(): void {
-    this.getPhotos(3)
-    this.getStatus(3)
+    this.photoInfoId = StringUtils.getUrlQuery("photoinfoid")
+    this.getPhotos(this.photoInfoId)
+    this.getStatus(this.photoInfoId)
   }
 
   getStatus(photoInfoId){
@@ -97,7 +101,7 @@ export class TruingComponent implements OnInit {
     }
     this.sort.item = sortItem
     this.sort.key = key
-    this.getPhotos(3)
+    this.getPhotos(this.photoInfoId)
   }
 
   /**
@@ -119,7 +123,7 @@ export class TruingComponent implements OnInit {
   onConfirm() {
 
     //从列表中移除要删除的图片
-    this.truingService.remove(3, this.removePhoto.imgName).then((response)=> {
+    this.truingService.remove(this.photoInfoId, this.removePhoto.imgName).then((response)=> {
       for (let i = 0; i < this.photoList.length; i++) {
         if (this.photoList[i].id === this.removePhoto.id) {
           this.photoList.splice(i, 1)
@@ -206,7 +210,7 @@ export class TruingComponent implements OnInit {
       imgName: params.imgName,
       imgSize: params.imgSize
     }
-    this.truingService.save(3, requestParams).then((response)=>{
+    this.truingService.save(this.photoInfoId, requestParams).then((response)=>{
       params.done(response)
     })
   }
@@ -215,7 +219,7 @@ export class TruingComponent implements OnInit {
    * 完成确认完成
    */
   onFinish(){
-    this.truingService.finish(3).then((response)=>{
+    this.truingService.finish(this.photoInfoId).then((response)=>{
       this.busTruingStatus = response.busTruingStatus
       this.tipInfo = {
         title: '确认上传成功',
@@ -229,7 +233,7 @@ export class TruingComponent implements OnInit {
    * 重新确认
    */
   onRedo(){
-    this.truingService.redo(3).then((response)=>{
+    this.truingService.redo(this.photoInfoId).then((response)=>{
       this.busTruingStatus = response.busTruingStatus
       this.tipInfo = {
         title: '重新确认成功',
