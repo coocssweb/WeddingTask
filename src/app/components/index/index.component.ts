@@ -2,8 +2,7 @@
  * 入口页面
  * @description :: 入口页面
  */
-import { Component, OnInit } from '@angular/core';
-import { IndexRoutingModule } from './index-routing.module'
+import { Component, OnInit } from '@angular/core'
 
 @Component({
     selector: '<index></index>',
@@ -16,7 +15,8 @@ export class IndexComponent implements OnInit {
     photoInfoId: string
 
     ngOnInit(): void {
-      this.photoInfoId = '3'
+      let location = window.location.href
+      this.photoInfoId = location.substring(location.lastIndexOf('/'),location.length)
     }
 
     onTab(tab, flag){

@@ -106,14 +106,14 @@ export class UploadComponent implements OnInit {
     let xhr = new XMLHttpRequest()
     xhr.open('post', 'http://upload.qiniu.com', true)
     let uploaded: number = 0
-    let temp = -1
+    let temp: number = -1
 
     if (xhr.upload) {
       xhr.upload.onprogress = function(e) {
-        uploaded =  parseInt((e.loaded *100)/ _this.fileList[i].file.size)
+        uploaded = e.loaded *100 / _this.fileList[i].file.size
 
         if(temp !== uploaded) {
-          document.getElementById(_this.fileListId+i).innerHTML = uploaded + '%'
+          document.getElementById(_this.fileListId+i).innerHTML = parseInt(uploaded.toString()) + '%'
           temp = uploaded
         }
 

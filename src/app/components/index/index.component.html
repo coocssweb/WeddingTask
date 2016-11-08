@@ -1,5 +1,5 @@
 <tabs>
-    <tabItem [isActive]="currentTab=='raw'" link="/raw/3" [disabled]="false" (click)="onTab('raw', true)">原片上传</tabItem>
-    <tabItem [isActive]="currentTab=='truing'" link="/truing/3" [disabled]="false" (click)="onTab('truing', true)">精修片上传</tabItem>
+    <tabItem [isActive]="currentTab=='raw'" link="/raw/{{photoInfoId}}" [disabled]="false" (click)="onTab('raw', true)">原片上传</tabItem>
+    <tabItem [isActive]="currentTab=='truing'" link="/truing/{{photoInfoId}}" [disabled]="false" (click)="onTab('truing', true)">精修片上传</tabItem>
 </tabs>
 <router-outlet></router-outlet>
