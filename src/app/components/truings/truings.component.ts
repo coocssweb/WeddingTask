@@ -3,6 +3,7 @@ import {Truing} from "./truing";
 import {TruingService} from "../../services/truing.service";
 import StringUtils from "../../utils/stringUtils";
 import {QINIU_DOMAIN} from "../../constant/config";
+import { ActivatedRoute, Params }   from '@angular/router';
 
 @Component({
   selector: 'truing',
@@ -11,8 +12,6 @@ import {QINIU_DOMAIN} from "../../constant/config";
   providers: [TruingService]
 })
 export class TruingComponent implements OnInit {
-
-  qiniuDomain: any = QINIU_DOMAIN
 
   //排序项
   sort = {
@@ -49,20 +48,23 @@ export class TruingComponent implements OnInit {
     on: false
   }
 
-  private photoInfoId: string
+  photoInfoId: number
 
   /**
    * 构造函数
    * @param checkService
    */
-  constructor(private truingService: TruingService) {
+  constructor(private truingService: TruingService,
+              private route: ActivatedRoute) {
   }
 
   /**
    * 初始化事件
    */
   ngOnInit(): void {
-    this.photoInfoId = StringUtils.getUrlQuery("photoinfoid")
+    this.route.params.forEach((params: Params) => {
+      this.photoInfoId = +params['photoinfoid']
+    });
     this.getPhotos(this.photoInfoId)
     this.getStatus(this.photoInfoId)
   }
@@ -85,10 +87,10 @@ export class TruingComponent implements OnInit {
       this.isLoadingData = false
 
       if(photos && photos.length){
-  
+
         this.photoList = photos
         this.photoList.map((item,index)=>{
-          this.photoList[index].imgKey = this.qiniuDomain+'/'+ item.imgKey+ '-300'
+          this.photoList[index].imgKey = QINIU_DOMAIN+'/'+ item.imgKey+ '-300'
         }, this)
       }
         //设置返回数据
@@ -203,7 +205,7 @@ export class TruingComponent implements OnInit {
     }
 
     this.photoList.unshift(
-      new Truing(id, response.imgIndex, this.qiniuDomain+"/"+ response.imgKey+ '-300', response.imgName,
+      new Truing(id, response.imgIndex, QINIU_DOMAIN+"/"+ response.imgKey+ '-300', response.imgName,
         response.imgSize, imgVersion, saveTime, true)
     )
   }
@@ -262,12 +264,12 @@ export class TruingComponent implements OnInit {
       on: false
     }
   }
-  
+
   setPhotoListByID(id,  isLoadingPreview){
     for(let i=0; i< this.photoList.length; i++){
       if(this.photoList[i].id == id){
         this.photoList[i].isLoadingPreview = isLoadingPreview
-        
+
         if(isLoadingPreview){
           if(this.photoList[i].imgKey!=''){
             this.photoList[i].tempKey = this.photoList[i].imgKey
@@ -276,32 +278,32 @@ export class TruingComponent implements OnInit {
         }else{
           this.photoList[i].imgKey = this.photoList[i].tempKey
         }
-        
+
         break
       }
     }
   }
-  
+
   onLoadImage(id,src,isLoadingPreview){
     if(!isLoadingPreview){
       this.setPhotoListByID(id, true)
       this.loadImage(id, src)
     }
   }
-  
+
   loadImage(id, src){
     let xhr = new XMLHttpRequest()
     xhr.open('get', src, true)
     xhr.send()
     let _this = this
- 
+
     xhr.onreadystatechange = function () {
       if (xhr.readyState == 4) {
         let result = { error: ''}
         try{
           result = JSON.parse(xhr.response)
         }catch(e){
-          
+
         }
         if(result.error){
           setTimeout(function () {
@@ -312,6 +314,6 @@ export class TruingComponent implements OnInit {
         }
       }
     }
-  
+
   }
 }

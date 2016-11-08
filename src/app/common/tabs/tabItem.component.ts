@@ -13,4 +13,5 @@ import { Component, Input, Output, EventEmitter } from '@angular/core'
 export class TabItemComponent {
     @Input() isActive: boolean
     @Input() disabled: boolean
+    @Input() link: string
 }

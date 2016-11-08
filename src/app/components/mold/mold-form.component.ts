@@ -2,7 +2,7 @@
  * 图片类型表单
  * @description :: 图片类型表单
  */
-import {Component, OnInit, Output, EventEmitter} from '@angular/core';
+import {Component, OnInit, Output, Input, EventEmitter} from '@angular/core';
 import {Mold} from './mold'
 import {MoldService} from '../../services/mold.service'
 import StringUtils from '../../utils/stringUtils'
@@ -14,6 +14,8 @@ import StringUtils from '../../utils/stringUtils'
     providers: [MoldService]
 })
 export class MoldFormComponent implements OnInit {
+
+    @Input() photoInfoId : string
 
     //切换场景回调
     @Output() onTabMoldCb = new EventEmitter()
@@ -54,8 +56,6 @@ export class MoldFormComponent implements OnInit {
 
     isShowTip: boolean = false
 
-    private photoInfoId: string
-
     /**
      * 构造函数
      * @param moldService
@@ -67,7 +67,6 @@ export class MoldFormComponent implements OnInit {
      * 初始化事件
      */
     ngOnInit(): void {
-        this.photoInfoId = StringUtils.getUrlQuery("photoinfoid")
         this.getRawInfo()
         this.getMolds()
         this.getOptions()

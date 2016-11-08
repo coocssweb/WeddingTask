@@ -14,31 +14,33 @@ import EXIF from "exif-js";
 })
 
 export class UploadComponent implements OnInit {
-  
+
+  @Input() photoInfoId : string
+
   //选择图片回调
   @Output() setFileListCb = new EventEmitter()
-  
+
   //上传图片回调
   @Output() uploadFileCb = new EventEmitter()
-  
+
   //保存图片信息回调
   @Output() saveCb = new EventEmitter()
-  
+
   @Input() mold: Mold
-  
+
   @Input() title: String
-  
+
   @Input() btnText: String
-  
+
   @Input() requireMold: boolean = false
-  
+
   @Input() fileInputId: String
-  
+
   @Input() fileListId: String
-  
+
   //是否显示tip信息
   isTip: boolean = false
-  
+
   //当前客户信息
   customer: Customer
   //token
@@ -47,36 +49,34 @@ export class UploadComponent implements OnInit {
   fileList: any [] = []
   //是否正在上传
   isFetchingToken: boolean = false
-  
-  private photoInfoId: string
-  
+
+
   constructor(private uploadService: UploadService, private customerService: CustomerService) {
-    
+
   }
-  
+
   /**
    * 初始化事件
    */
   ngOnInit(): void {
-    this.photoInfoId = StringUtils.getUrlQuery("photoinfoid")
     this.getCustomer()
   }
-  
+
   //上传按钮点击事件
   onClick() {
-    
+
     if (!this.mold && this.requireMold) {
       this.isTip = true
       return
     }
-    
+
     document.getElementById("" + this.fileInputId).click()
   }
-  
+
   onConfirm() {
     this.isTip = false
   }
-  
+
   /**
    * 获取用户信息
    */
@@ -85,58 +85,58 @@ export class UploadComponent implements OnInit {
       this.customer = new Customer(response.id, response.name, response.groupId, response.headImage)
     })
   }
-  
-  
+
+
   /**
    * 上传图片
    * @param i
    */
   uploadFile(i) {
-  
+
     //临时存储this
     let _this = this
-    
+
     //设置等待状态
     this.fileList[i].isWaiting = false
     this.fileList[i].isUploading = true
-    
+
     this.setFileListCb.emit(this.fileList)
-    
+
     //请求七牛上传接口
     let xhr = new XMLHttpRequest()
     xhr.open('post', 'http://upload.qiniu.com', true)
-    let uploaded: any = 0
+    let uploaded: number = 0
     let temp = -1
-    
+
     if (xhr.upload) {
       xhr.upload.onprogress = function(e) {
         uploaded =  parseInt((e.loaded *100)/ _this.fileList[i].file.size)
-        
+
         if(temp !== uploaded) {
           document.getElementById(_this.fileListId+i).innerHTML = uploaded + '%'
           temp = uploaded
         }
-        
+
       }
     }
-    
-    
+
+
     //当前正在上传的图片
     let file = this.fileList[i]
-    
+
     //当前token
     let token = this.token[i]
-    
+
     //生成图片上传的key
-    
+
     xhr.onreadystatechange = function () {
       if (xhr.readyState == 4) {
         //上传成功
         _this.fileList[i].isUploading = false
         _this.fileList[i].isSuccess = true
-        
+
         _this.setFileListCb.emit(_this.fileList)
-        
+
         _this.saveCb.emit({
           imgKey: token.key,
           imgName: file.imgName,
@@ -154,9 +154,9 @@ export class UploadComponent implements OnInit {
         })
       }
     }
-    
-    
-    
+
+
+
     //构造Formdata上传信息
     var formData = new FormData()
     formData.append('name', file.imgName)
@@ -166,19 +166,19 @@ export class UploadComponent implements OnInit {
     //执行发送
     xhr.send(formData)
   }
-  
+
   //文件输入框变化事件
   onFileChange(event: any) {
     let files = (<HTMLInputElement>document.getElementById("" + this.fileInputId)).files
-    
-    
+
+
     let fileList = []
-    
+
     for (let i = 0; i < files.length; i++) {
       let file: any = files[i]
       //倒叙插入等待上传的原片
       let imgShootTime = StringUtils.stampToString(file.lastModified)
-      
+
       let _this = this
       EXIF.getData(file, function () {
         let data: any = EXIF.getAllTags(this)
@@ -198,25 +198,25 @@ export class UploadComponent implements OnInit {
           isWaiting: true,
           loaded: '0%'
         })
-        
+
         if (fileList.length == files.length) {
           _this.getToken(fileList)
         }
-        
+
       })
     }
   }
-  
-  
+
+
   /**
    * 获取七牛Token
    */
   getToken(fileList): void {
-    
+
     if (this.isFetchingToken) {
       alert('正在获取token,请等待...')
     }
-    
+
     this.isFetchingToken = true
     let _this = this
     //批量获取token
@@ -225,7 +225,7 @@ export class UploadComponent implements OnInit {
       _this.isFetchingToken = false
       _this.token = token.concat(_this.token)
       _this.fileList = fileList.concat(_this.fileList)
-      
+
       _this.setFileListCb.emit(_this.fileList)
       //获取token成功,队列上传图片
       _this.uploadFile(_this.fileList.length - 1)

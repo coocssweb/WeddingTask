@@ -3,8 +3,8 @@ import {Photo} from "./photo";
 import {Mold} from "../mold/mold";
 import {PhotoService} from "../../services/photos.service";
 import {MoldFormComponent} from "../mold/mold-form.component";
-import StringUtils from "../../utils/stringUtils";
 import {QINIU_DOMAIN} from "../../constant/config";
+import { ActivatedRoute, Params }   from '@angular/router';
 
 @Component({
   selector: 'photos',
@@ -16,8 +16,6 @@ export class PhotosComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MoldFormComponent)
   moldFormComponent: MoldFormComponent
-
-  qiniuDomain: any = QINIU_DOMAIN
 
   //排序项
   sort = {
@@ -50,20 +48,24 @@ export class PhotosComponent implements OnInit, AfterViewInit {
   previewIndex: number
 
 
-  private photoInfoId: string
+  photoInfoId: number
 
   /**
    * 构造函数
    * @param photoService
    */
-  constructor(private photoService: PhotoService) {
+  constructor(private photoService: PhotoService,
+              private route: ActivatedRoute) {
   }
 
   /**
    * 初始化事件
    */
   ngOnInit(): void {
-    this.photoInfoId = StringUtils.getUrlQuery("photoinfoid")
+    this.route.params.forEach((params: Params) => {
+      this.photoInfoId = +params['photoinfoid']
+    });
+
     this.getPhotos(null)
 
   }
@@ -85,11 +87,11 @@ export class PhotosComponent implements OnInit, AfterViewInit {
 
       //设置返回数据
       this.photoList = photos.results ? photos.results : []
-  
+
       this.photoList.map((item,index)=>{
-        this.photoList[index].imgKey = this.qiniuDomain+'/'+ item.imgKey+ '-300'
+        this.photoList[index].imgKey = QINIU_DOMAIN+'/'+ item.imgKey+ '-300'
       }, this)
-      
+
     })
   }
 
@@ -218,7 +220,7 @@ export class PhotosComponent implements OnInit, AfterViewInit {
     this.fileList.pop()
     //原片列表插入刚上传的图片信息
     this.photoList.unshift(
-      new Photo(response.id, response.imgIndex, response.imgName, this.qiniuDomain+"/"+ response.imgKey+ '-300',
+      new Photo(response.id, response.imgIndex, response.imgName, QINIU_DOMAIN+"/"+ response.imgKey+ '-300',
         response.imgSize, response.imgShootTime,
         response.remark, true)
     )
@@ -253,14 +255,14 @@ export class PhotosComponent implements OnInit, AfterViewInit {
       this.moldFormComponent.getRawInfo()
     })
   }
-  
-  
-  
+
+
+
   setPhotoListByID(id,  isLoadingPreview){
     for(let i=0; i< this.photoList.length; i++){
       if(this.photoList[i].id == id){
         this.photoList[i].isLoadingPreview = isLoadingPreview
-        
+
         if(isLoadingPreview){
           if(this.photoList[i].imgKey!=''){
             this.photoList[i].tempKey = this.photoList[i].imgKey
@@ -269,32 +271,32 @@ export class PhotosComponent implements OnInit, AfterViewInit {
         }else{
           this.photoList[i].imgKey = this.photoList[i].tempKey
         }
-        
+
         break
       }
     }
   }
-  
+
   onLoadImage(id,src,isLoadingPreview){
     if(!isLoadingPreview){
       this.setPhotoListByID(id, true)
       this.loadImage(id, src)
     }
   }
-  
+
   loadImage(id, src){
     let xhr = new XMLHttpRequest()
     xhr.open('get', src, true)
     xhr.send()
     let _this = this
-    
+
     xhr.onreadystatechange = function () {
       if (xhr.readyState == 4) {
         let result = { error: ''}
         try{
           result = JSON.parse(xhr.response)
         }catch(e){
-          
+
         }
         if(result.error){
           setTimeout(function () {
@@ -305,7 +307,7 @@ export class PhotosComponent implements OnInit, AfterViewInit {
         }
       }
     }
-    
+
   }
 
 }

@@ -1,6 +1,7 @@
 import {BrowserModule} from '@angular/platform-browser'
 import {NgModule} from '@angular/core'
 import {FormsModule} from '@angular/forms'
+import { RouterModule }   from '@angular/router';
 import {AppComponent} from './app.component'
 import {IndexComponent} from './components/index/index.component'
 import {MoldFormComponent} from './components/mold/mold-form.component'
@@ -38,10 +39,20 @@ import {HttpModule, JsonpModule} from '@angular/http'
         BrowserModule,
         FormsModule,
         HttpModule,
-        JsonpModule
+        JsonpModule,
+        RouterModule.forRoot([
+          { path: 'raw/:photoinfoid', component: PhotosComponent },
+          { path: 'truing/:photoinfoid', component: TruingComponent },
+        ]),
+        RouterModule.forChild([])
+    ],
+    exports: [
+        RouterModule
     ],
     providers: [],
     bootstrap: [AppComponent]
 })
+
+
 export class AppModule {
 }
